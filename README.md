@@ -29,14 +29,14 @@ I wanted a setup that mirrors how teams centralize endpoint telemetry in the rea
 ## Project Goals
 - Set up **WEF (source-initiated subscription)** to forward Security + Sysmon events from endpoints to a collector
 - Deploy **Sysmon** with a tuned configuration on lab endpoints
-- Ingest the telemetry into **Wazuh**, **Elastic**, and **Splunk Free**
+- Ingest the telemetry into **Wazuh**, **Elastic**, and **Splunk**
 - Validate the pipeline using known test events and capture evidence screenshots
 
 ## Architecture (High Level)
 **Flow (planned):**
 Endpoints (domain-joined Windows)  
 → **WEF Collector** (TBD: AD-DC01 vs dedicated collector)  
-→ **Wazuh / Elastic / Splunk Free**
+→ **Wazuh / Elastic / Splunk**
 
 Diagram (planned): `diagrams/pipeline-diagram.png`  
 (See checklist: `diagrams/README.md`)
@@ -54,7 +54,7 @@ Diagram (planned): `diagrams/pipeline-diagram.png`
 - **Elastic**  
   **Why it’s included:** Elastic is great for fast searching and field-based pivots, so it’s a strong platform to practice “find → filter → pivot” investigation workflows.
 
-- **Splunk Free**  
+- **Splunk**  
   **Why it’s included:** Splunk is common in SOC environments, and I want hands-on repetition with SPL searches and investigation patterns.
 
 ## Milestones (Blueprint → Implementation)
