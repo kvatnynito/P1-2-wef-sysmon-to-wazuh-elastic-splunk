@@ -1,9 +1,9 @@
 https://github.com/kvatnynito/Cybersecurity-Portfolio1
 
-# P1-2: Telemetry Pipeline — WEF + Sysmon → Wazuh / Elastic / Splunk Free
+# P1-2: Telemetry Pipeline 
 
 ## Overview
-This project documents how I’m building a centralized Windows telemetry pipeline using **Windows Event Forwarding (WEF)** and **Sysmon**, then validating that the same telemetry is searchable in **Wazuh**, **Elastic**, and **Splunk Free**.
+This project documents how I’m building a centralized Windows telemetry pipeline using **Windows Event Forwarding (WEF)** and **Sysmon**, then validating that the same telemetry is searchable in **Wazuh**, **Elastic**, and **Splunk**.
 
 The goal is to practice realistic SOC workflows: collecting endpoint signals, confirming end-to-end delivery, and building repeatable investigation pivots.
 
