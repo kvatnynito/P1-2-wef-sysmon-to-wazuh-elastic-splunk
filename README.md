@@ -9,7 +9,7 @@ The goal is to practice realistic SOC workflows: collecting endpoint signals, co
 
 ## Dependencies
 This project is implemented on the segmented lab documented in:
-- P1-1-proxmox-segmentation-lab
+- P1-1-proxmox-segmentation-lab completed.
 
 Hosts used (TBD during implementation):
 - Collector: TBD (AD-DC01 vs WEC01)
