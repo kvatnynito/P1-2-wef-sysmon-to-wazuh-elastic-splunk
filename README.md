@@ -191,3 +191,12 @@ Endpoints (domain-joined Windows)
 
 - **Splunk**  
   **Why it’s included:** Splunk is common in SOC environments, and I want hands-on repetition with SPL searches and triage patterns.
+
+## What’s Next
+
+This repo builds the telemetry foundation for [P1-3: Incident Investigation Case Files](https://github.com/kvatnynito/P1-3-incident-investigation-casefiles):
+
+- simulated security activity using the segmented lab zones from P1-1
+- investigation case files built from validated telemetry in Splunk, Wazuh, and Elastic
+- timelines, queries, evidence screenshots, and analyst conclusions
+- follow-up notes for detection tuning, logging gaps, and hardening improvements
