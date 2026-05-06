@@ -54,18 +54,21 @@ This project is intended to demonstrate:
 
 ## Milestone Tracker
 
-- [x] Milestone 1: Repo structure and telemetry design baseline
-- [ ] Milestone 2: Decide collector placement and prepare first Windows endpoint
-- [ ] Milestone 3: Deploy Sysmon and confirm local event generation
-- [ ] Milestone 4: Configure WEF and confirm collector-side event receipt
-- [ ] Milestone 5: Validate telemetry ingestion in Wazuh, Elastic, and Splunk
-- [ ] Milestone 6: Add `LAN1-FILE01` and expand Windows telemetry coverage
-- [ ] Milestone 7: Add `AD-WIN11` and expand endpoint coverage
-- [ ] Milestone 8: Add `VULN-DVWA01` and validate web activity telemetry
-- [ ] Milestone 9: Add `TEST-WIN2019-LAN2` and validate Windows server telemetry
-- [ ] Milestone 10: Add `SCAN-OPENVAS01` and review scan-generated telemetry
-- [ ] Milestone 11: Optional `VULN-WEBGOAT01` telemetry expansion
-- [ ] Milestone 12: Optional `VULN-UBU-OLD` telemetry expansion
+> Note: P1-2 begins after Milestone 5 is completed in `P1-1-proxmox-segmentation-lab`.
+> Milestones 1–5 belong to P1-1 and cover the segmented lab foundation.
+
+- [x] Milestone 6: Repo structure and telemetry design baseline
+- [ ] Milestone 7: Decide collector placement and prepare first Windows endpoint
+- [ ] Milestone 8: Deploy Sysmon and confirm local event generation
+- [ ] Milestone 9: Configure WEF and confirm collector-side event receipt
+- [ ] Milestone 10: Validate telemetry ingestion in Wazuh, Elastic, and Splunk
+- [ ] Milestone 11: Add `LAN1-FILE01` and expand Windows telemetry coverage
+- [ ] Milestone 12: Add `AD-WIN11` and expand endpoint coverage
+- [ ] Milestone 13: Add `VULN-DVWA01` and validate web activity telemetry
+- [ ] Milestone 14: Add `TEST-WIN2019-LAN2` and validate Windows server telemetry
+- [ ] Milestone 15: Add `SCAN-OPENVAS01` and review scan-generated telemetry
+- [ ] Milestone 16: Optional `VULN-WEBGOAT01` telemetry expansion
+- [ ] Milestone 17: Optional `VULN-UBU-OLD` telemetry expansion
 
 ---
 
