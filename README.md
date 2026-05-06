@@ -1,5 +1,9 @@
 # P1-2: Telemetry Pipeline
 
+P1-2 is part of Portfolio 1 (P1) — Lab Infrastructure, Telemetry, and Investigation Case Files
+
+**Portfolio Hub:** [Cybersecurity Portfolio 1](https://github.com/kvatnynito/Cybersecurity-Portfolio1)
+
 ## Overview
 
 This repo is planned to document how I will build a centralized Windows telemetry pipeline using **Windows Event Forwarding (WEF)** and **Sysmon**, then validate that the same telemetry is searchable in **Wazuh**, **Elastic**, and **Splunk**.
