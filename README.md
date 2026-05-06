@@ -66,6 +66,13 @@ This project is intended to demonstrate:
 
 ---
 
+## Network Diagram
+![Network diagram](diagrams/proxmox-network-diagram.png)
+
+**Design intent:** `FW-EDGE01` (pfSense) provides WAN access and acts as the central routing and segmentation point between **LAN1 (enterprise / blue-team)** and **LAN2 (vulnerable / testing)**.
+
+---
+
 ## Architecture (High Level)
 
 ### Flow (Planned)
