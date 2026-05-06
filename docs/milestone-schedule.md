@@ -25,7 +25,7 @@ This file shows the intended project roadmap for P1-2 only. For the current live
 
 ## Current Milestone
 
-- Milestone 6 — Collector Placement and First Endpoint Prep
+- Milestone 6 — Logging Foundation
 
 ## Completed Milestones
 
@@ -49,38 +49,58 @@ The segmented lab foundation already exists in `P1-1-proxmox-segmentation-lab`, 
 
 This repo focuses on telemetry collection, forwarding, validation, and investigation readiness.
 
-Repo structure for P1-2 has already been created, but implementation has not started yet.
+Splunk was installed and its Web UI was validated in P1-1, but telemetry ingestion was not yet tested.
 
-The first actionable milestone in this repo is Milestone 6.
+The first actionable milestone in this repo is Milestone 6: prove initial log flow into Splunk before expanding the telemetry design or adding more hosts.
 
 Additional hosts may be created during this project, but only when they support telemetry, detection, or investigation workflows.
 
 ---
 
-## Milestone 6 — Collector Placement and First Endpoint Prep
+## Milestone 6 — Logging Foundation
 
 ### Goal
 
-Decide collector placement and prepare the first Windows endpoint for telemetry onboarding.
+Prove that pfSense and Windows logs flow into Splunk before expanding the lab.
+
+### Core Rule
+
+Do not add more VMs during this milestone unless Splunk logging is working first.
 
 ### Tasks
 
-- Decide whether the collector will be `AD-DC01` or a dedicated `WEC01`.
-- Document reasoning and design tradeoffs.
-- Confirm first endpoint selection.
-- Prepare the first Windows endpoint for telemetry onboarding.
-- Confirm the endpoint is reachable and ready for logging configuration.
+- Confirm Splunk is installed and running on `SIEM-SPLUNK01`.
+- Confirm Splunk Web UI is reachable.
+- Configure Splunk to receive pfSense syslog.
+- Configure pfSense logs to forward to `SIEM-SPLUNK01`.
+- Verify pfSense firewall logs appear in Splunk.
+- Configure Windows log forwarding from `TEST-WIN10-LAN1`.
+- Prefer Splunk Universal Forwarder for the first Windows source unless there is a reason to use WEF immediately.
+- Verify Windows logs appear in Splunk.
+- Document log sources in GitHub.
 
-### Expected Result
+### Expected Log Source Map
 
-- Collector placement decision is documented.
-- First endpoint is chosen and ready.
-- The initial telemetry path has a defined starting point.
+| Source | Destination | Method | Port | Status |
+|---|---|---|---:|---|
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 514 | Planned |
+| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
+
+### Completion Criteria
+
+Milestone 6 is complete only when:
+
+- pfSense forwards logs to `SIEM-SPLUNK01`.
+- Splunk displays pfSense logs.
+- `TEST-WIN10-LAN1` sends logs to Splunk.
+- Splunk displays Windows logs.
+- GitHub documentation includes source IPs, ports, screenshots, and validation searches.
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-06-collector-placement-decision.md`
-- `docs/milestone-06-first-endpoint-prep.md`
+- `docs/milestone-06-logging-foundation.md`
+- `docs/milestone-06-splunk-pfsense-syslog-setup.md`
+- `docs/milestone-06-windows-forwarder-onboarding.md`
 
 ### Status
 
@@ -88,7 +108,38 @@ Planned.
 
 ---
 
-## Milestone 7 — Sysmon Deployment and Local Validation
+## Milestone 7 — Collector Placement and First Endpoint Prep
+
+### Goal
+
+Decide collector placement and prepare the first Windows endpoint for the next telemetry phase.
+
+### Tasks
+
+- Decide whether the collector will be `AD-DC01` or a dedicated `WEC01`.
+- Document reasoning and design tradeoffs.
+- Confirm first endpoint selection for WEF/Sysmon onboarding.
+- Prepare the endpoint for the next telemetry phase.
+- Confirm the endpoint is reachable and ready for additional logging configuration.
+
+### Expected Result
+
+- Collector placement decision is documented.
+- First endpoint is chosen and ready.
+- The next telemetry path beyond direct Splunk ingestion has a defined starting point.
+
+### Portfolio Artifact Ideas
+
+- `docs/milestone-07-collector-placement-decision.md`
+- `docs/milestone-07-first-endpoint-prep.md`
+
+### Status
+
+Planned.
+
+---
+
+## Milestone 8 — Sysmon Deployment and Local Validation
 
 ### Goal
 
@@ -105,7 +156,7 @@ Deploy Sysmon and confirm local event generation on the first Windows endpoint.
 
 ### Completion Criteria
 
-Milestone 7 is complete only when:
+Milestone 8 is complete only when:
 
 - Sysmon is installed.
 - Sysmon is running.
@@ -114,8 +165,8 @@ Milestone 7 is complete only when:
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-07-sysmon-deployment.md`
-- `docs/milestone-07-sysmon-local-validation.md`
+- `docs/milestone-08-sysmon-deployment.md`
+- `docs/milestone-08-sysmon-local-validation.md`
 
 ### Status
 
@@ -123,7 +174,7 @@ Planned.
 
 ---
 
-## Milestone 8 — WEF Configuration and Collector Validation
+## Milestone 9 — WEF Configuration and Collector Validation
 
 ### Goal
 
@@ -139,7 +190,7 @@ Configure WEF and confirm event receipt at the collector.
 
 ### Completion Criteria
 
-Milestone 8 is complete only when:
+Milestone 9 is complete only when:
 
 - WEF subscription is configured.
 - Security and Sysmon events arrive at the collector.
@@ -147,8 +198,8 @@ Milestone 8 is complete only when:
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-08-wef-subscription-setup.md`
-- `docs/milestone-08-collector-event-validation.md`
+- `docs/milestone-09-wef-subscription-setup.md`
+- `docs/milestone-09-collector-event-validation.md`
 
 ### Status
 
@@ -156,7 +207,7 @@ Planned.
 
 ---
 
-## Milestone 9 — Multi-Platform Ingestion Validation
+## Milestone 10 — Multi-Platform Ingestion Validation
 
 ### Goal
 
@@ -172,7 +223,7 @@ Validate telemetry ingestion in Wazuh, Elastic, and Splunk.
 
 ### Completion Criteria
 
-Milestone 9 is complete only when:
+Milestone 10 is complete only when:
 
 - Telemetry is searchable in Wazuh.
 - Telemetry is searchable in Elastic.
@@ -181,9 +232,9 @@ Milestone 9 is complete only when:
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-09-wazuh-ingestion-validation.md`
-- `docs/milestone-09-elastic-ingestion-validation.md`
-- `docs/milestone-09-splunk-ingestion-validation.md`
+- `docs/milestone-10-wazuh-ingestion-validation.md`
+- `docs/milestone-10-elastic-ingestion-validation.md`
+- `docs/milestone-10-splunk-ingestion-validation.md`
 
 ### Status
 
@@ -191,7 +242,7 @@ Planned.
 
 ---
 
-## Milestone 10 — File Server Telemetry Expansion
+## Milestone 11 — File Server Telemetry Expansion
 
 ### Goal
 
@@ -213,7 +264,7 @@ Add `LAN1-FILE01` and expand Windows telemetry coverage.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| LAN1-FILE01 | File server / SMB telemetry source | LAN1 / vmbr1 | Planned Milestone 10 |
+| `LAN1-FILE01` | File server / SMB telemetry source | LAN1 / vmbr1 | Planned Milestone 11 |
 
 ### Why This Matters
 
@@ -221,8 +272,8 @@ This host creates realistic enterprise telemetry such as SMB activity, authentic
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-10-file-server-onboarding.md`
-- `docs/milestone-10-smb-telemetry-validation.md`
+- `docs/milestone-11-file-server-onboarding.md`
+- `docs/milestone-11-smb-telemetry-validation.md`
 
 ### Status
 
@@ -230,7 +281,7 @@ Planned.
 
 ---
 
-## Milestone 11 — Second Endpoint Telemetry Expansion
+## Milestone 12 — Second Endpoint Telemetry Expansion
 
 ### Goal
 
@@ -254,12 +305,12 @@ Add `AD-WIN11` and expand endpoint telemetry coverage.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| AD-WIN11 | Second domain-joined Windows telemetry endpoint | LAN1 / vmbr1 | Planned Milestone 11 |
+| `AD-WIN11` | Second domain-joined Windows telemetry endpoint | LAN1 / vmbr1 | Planned Milestone 12 |
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-11-ad-win11-onboarding.md`
-- `docs/milestone-11-endpoint-telemetry-validation.md`
+- `docs/milestone-12-ad-win11-onboarding.md`
+- `docs/milestone-12-endpoint-telemetry-validation.md`
 
 ### Status
 
@@ -267,7 +318,7 @@ Planned.
 
 ---
 
-## Milestone 12 — DVWA Telemetry Source
+## Milestone 13 — DVWA Telemetry Source
 
 ### Goal
 
@@ -289,12 +340,12 @@ Add `VULN-DVWA01` and validate web activity telemetry.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| VULN-DVWA01 | Vulnerable web telemetry source | LAN2 / vmbr2 | Planned Milestone 12 |
+| `VULN-DVWA01` | Vulnerable web telemetry source | LAN2 / vmbr2 | Planned Milestone 13 |
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-12-dvwa-setup.md`
-- `docs/milestone-12-dvwa-telemetry-validation.md`
+- `docs/milestone-13-dvwa-setup.md`
+- `docs/milestone-13-dvwa-telemetry-validation.md`
 
 ### Status
 
@@ -302,7 +353,7 @@ Planned.
 
 ---
 
-## Milestone 13 — Windows Server Telemetry Source
+## Milestone 14 — Windows Server Telemetry Source
 
 ### Goal
 
@@ -332,13 +383,13 @@ Do not call it vulnerable before it is actually misconfigured.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| TEST-WIN2019-LAN2 | Windows Server telemetry source | LAN2 / vmbr2 | Planned Milestone 13 |
-| VULN-WIN2019 | Intentionally weakened Windows Server target | LAN2 / vmbr2 | Future state after misconfiguration |
+| `TEST-WIN2019-LAN2` | Windows Server telemetry source | LAN2 / vmbr2 | Planned Milestone 14 |
+| `VULN-WIN2019` | Intentionally weakened Windows Server target | LAN2 / vmbr2 | Future state after misconfiguration |
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-13-windows-server-onboarding.md`
-- `docs/milestone-13-windows-server-telemetry-validation.md`
+- `docs/milestone-14-windows-server-onboarding.md`
+- `docs/milestone-14-windows-server-telemetry-validation.md`
 
 ### Status
 
@@ -346,7 +397,7 @@ Planned.
 
 ---
 
-## Milestone 14 — Vulnerability Scan Telemetry
+## Milestone 15 — Vulnerability Scan Telemetry
 
 ### Goal
 
@@ -367,7 +418,7 @@ Add `SCAN-OPENVAS01` and review scan-generated telemetry.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| SCAN-OPENVAS01 | Vulnerability scanner / telemetry generator | LAN2 / vmbr2 | Planned Milestone 14 |
+| `SCAN-OPENVAS01` | Vulnerability scanner / telemetry generator | LAN2 / vmbr2 | Planned Milestone 15 |
 
 ### Naming Note
 
@@ -377,8 +428,8 @@ OpenVAS is the scanner, not the victim.
 
 ### Portfolio Artifact Ideas
 
-- `docs/milestone-14-openvas-setup.md`
-- `docs/milestone-14-scan-telemetry-review.md`
+- `docs/milestone-15-openvas-setup.md`
+- `docs/milestone-15-scan-telemetry-review.md`
 
 ### Status
 
@@ -386,7 +437,7 @@ Planned.
 
 ---
 
-## Milestone 15 — Optional WebGoat Telemetry Expansion
+## Milestone 16 — Optional WebGoat Telemetry Expansion
 
 ### Goal
 
@@ -408,7 +459,7 @@ Add `VULN-WEBGOAT01` as an optional second vulnerable web telemetry source.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| VULN-WEBGOAT01 | Optional vulnerable web telemetry source | LAN2 / vmbr2 | Optional Milestone 15 |
+| `VULN-WEBGOAT01` | Optional vulnerable web telemetry source | LAN2 / vmbr2 | Optional Milestone 16 |
 
 ### Status
 
@@ -416,7 +467,7 @@ Optional / Planned.
 
 ---
 
-## Milestone 16 — Optional Outdated Linux Telemetry Expansion
+## Milestone 17 — Optional Outdated Linux Telemetry Expansion
 
 ### Goal
 
@@ -437,7 +488,7 @@ Add `VULN-UBU-OLD` as an optional outdated Linux telemetry source.
 
 | VM Name | Role | Network | Status |
 |---|---|---|---|
-| VULN-UBU-OLD | Optional outdated Linux telemetry source | LAN2 / vmbr2 | Optional Milestone 16 |
+| `VULN-UBU-OLD` | Optional outdated Linux telemetry source | LAN2 / vmbr2 | Optional Milestone 17 |
 
 ### Status
 
@@ -479,25 +530,25 @@ This repo should stay focused on making telemetry usable, searchable, and valida
 
 | VM Name | Role |
 |---|---|
-| FW-EDGE01 | pfSense firewall/router |
-| AD-DC01 | Domain Controller / possible collector candidate |
-| TEST-WIN10-LAN1 | First Windows endpoint / future AD-WIN10 |
-| TEST-WIN10-LAN2 | LAN2 Windows endpoint |
-| ATTACK-KALI01 | Kali traffic generator |
-| VULN-METASPLOITABLE2 | Vulnerable Linux target |
-| SIEM-SPLUNK01 | Splunk destination |
+| `FW-EDGE01` | pfSense firewall/router |
+| `AD-DC01` | Domain Controller / possible collector candidate |
+| `TEST-WIN10-LAN1` | First Windows endpoint / future AD-WIN10 |
+| `TEST-WIN10-LAN2` | LAN2 Windows endpoint |
+| `ATTACK-KALI01` | Kali traffic generator |
+| `VULN-METASPLOITABLE2` | Vulnerable Linux target |
+| `SIEM-SPLUNK01` | Splunk destination |
 
 ## Added During P1-2 as Needed
 
 | VM Name | Planned Milestone | Role |
 |---|---:|---|
-| LAN1-FILE01 | Milestone 10 | File server / SMB telemetry source |
-| AD-WIN11 | Milestone 11 | Second Windows endpoint |
-| VULN-DVWA01 | Milestone 12 | Vulnerable web telemetry source |
-| TEST-WIN2019-LAN2 | Milestone 13 | Windows Server telemetry source |
-| SCAN-OPENVAS01 | Milestone 14 | Vulnerability scan telemetry source |
-| VULN-WEBGOAT01 | Milestone 15 | Optional vulnerable web telemetry source |
-| VULN-UBU-OLD | Milestone 16 | Optional outdated Linux telemetry source |
+| `LAN1-FILE01` | Milestone 11 | File server / SMB telemetry source |
+| `AD-WIN11` | Milestone 12 | Second Windows endpoint |
+| `VULN-DVWA01` | Milestone 13 | Vulnerable web telemetry source |
+| `TEST-WIN2019-LAN2` | Milestone 14 | Windows Server telemetry source |
+| `SCAN-OPENVAS01` | Milestone 15 | Vulnerability scan telemetry source |
+| `VULN-WEBGOAT01` | Milestone 16 | Optional vulnerable web telemetry source |
+| `VULN-UBU-OLD` | Milestone 17 | Optional outdated Linux telemetry source |
 
 ---
 
@@ -505,13 +556,13 @@ This repo should stay focused on making telemetry usable, searchable, and valida
 
 Build in this order:
 
-1. LAN1-FILE01
-2. AD-WIN11
-3. VULN-DVWA01
-4. TEST-WIN2019-LAN2
-5. SCAN-OPENVAS01
-6. VULN-WEBGOAT01
-7. VULN-UBU-OLD
+1. `LAN1-FILE01`
+2. `AD-WIN11`
+3. `VULN-DVWA01`
+4. `TEST-WIN2019-LAN2`
+5. `SCAN-OPENVAS01`
+6. `VULN-WEBGOAT01`
+7. `VULN-UBU-OLD`
 
 Reason:
 
@@ -534,9 +585,9 @@ Examples:
 
 | System | Diagram Label |
 |---|---|
-| `LAN1-FILE01` | Planned Milestone 10 |
-| `VULN-DVWA01` | Planned Milestone 12 |
-| `VULN-WEBGOAT01` | Optional Milestone 15 |
+| `LAN1-FILE01` | Planned Milestone 11 |
+| `VULN-DVWA01` | Planned Milestone 13 |
+| `VULN-WEBGOAT01` | Optional Milestone 16 |
 
 Rule:
 
@@ -562,12 +613,14 @@ A milestone is not complete just because software was installed. It is complete 
 
 Examples:
 
-- Milestone 7 is not complete just because Sysmon was installed.
-- Milestone 7 is complete when Sysmon is generating local events and evidence is documented.
-- Milestone 8 is not complete just because a subscription exists.
-- Milestone 8 is complete when events are arriving at the collector and documented.
-- Milestone 9 is not complete just because a destination was configured.
-- Milestone 9 is complete when telemetry is searchable in the destination and documented.
+- Milestone 6 is not complete just because inputs were configured.
+- Milestone 6 is complete when pfSense and Windows logs are visible in Splunk and documented.
+- Milestone 8 is not complete just because Sysmon was installed.
+- Milestone 8 is complete when Sysmon is generating local events and evidence is documented.
+- Milestone 9 is not complete just because a subscription exists.
+- Milestone 9 is complete when events are arriving at the collector and documented.
+- Milestone 10 is not complete just because a destination was configured.
+- Milestone 10 is complete when telemetry is searchable in the destination and documented.
 
 ---
 
@@ -591,11 +644,14 @@ docs/milestone-XX-topic-name.md
 Examples:
 
 ```text
-docs/milestone-07-sysmon-deployment.md
-docs/milestone-08-wef-subscription-setup.md
-docs/milestone-09-splunk-ingestion-validation.md
-docs/milestone-12-dvwa-telemetry-validation.md
-docs/milestone-14-scan-telemetry-review.md
+docs/milestone-06-logging-foundation.md
+docs/milestone-06-splunk-pfsense-syslog-setup.md
+docs/milestone-06-windows-forwarder-onboarding.md
+docs/milestone-08-sysmon-deployment.md
+docs/milestone-09-wef-subscription-setup.md
+docs/milestone-10-splunk-ingestion-validation.md
+docs/milestone-13-dvwa-telemetry-validation.md
+docs/milestone-15-scan-telemetry-review.md
 ```
 
 ---
@@ -606,6 +662,8 @@ Every major telemetry task should include proof.
 
 Good validation examples:
 
+- pfSense log visible in Splunk
+- Windows event visible in Splunk
 - Sysmon event visible locally
 - WEF event visible at collector
 - Wazuh event visible in dashboard or search
