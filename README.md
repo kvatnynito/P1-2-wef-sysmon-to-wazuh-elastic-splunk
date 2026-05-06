@@ -56,8 +56,11 @@ This project is intended to demonstrate:
 
 > Note: P1-2 begins after Milestone 5 is completed in `P1-1-proxmox-segmentation-lab`.
 > Milestones 1–5 belong to P1-1 and cover the segmented lab foundation.
+>
+> Splunk was installed and its Web UI was validated in P1-1, but telemetry ingestion was not yet tested.
+> The first actionable milestone in P1-2 is Milestone 6: proving initial log flow into Splunk.
 
-- [x] Milestone 6: Repo structure and telemetry design baseline
+- [ ] Milestone 6: Prove pfSense and Windows logs flow into Splunk
 - [ ] Milestone 7: Decide collector placement and prepare first Windows endpoint
 - [ ] Milestone 8: Deploy Sysmon and confirm local event generation
 - [ ] Milestone 9: Configure WEF and confirm collector-side event receipt
