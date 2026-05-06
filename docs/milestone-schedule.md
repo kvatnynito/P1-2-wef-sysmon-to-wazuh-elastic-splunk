@@ -31,7 +31,7 @@ This file shows the intended project roadmap for P1-2 only. For the current live
 
 - None yet.
 
-## Current Note
+## Transition Note
 
 P1-2 begins after P1-1 is completed.
 
