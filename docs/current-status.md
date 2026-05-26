@@ -55,7 +55,7 @@ Milestone 6 focuses on validating two initial log sources:
 
 | Source | Destination | Method | Port | Current Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Planned |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | In progress - Splunk UDP input configured |
 | `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
 
 ## Current Progress
@@ -64,6 +64,7 @@ Milestone 6 focuses on validating two initial log sources:
 - Splunk is installed on `SIEM-SPLUNK01`.
 - Splunk Web UI was validated during P1-1.
 - Splunk Web UI was revalidated from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
+- Splunk UDP network input for pfSense syslog was configured on UDP `5514` with sourcetype `syslog` and index `default` / `main`.
 - P1-2 telemetry ingestion validation is in progress.
 - pfSense log forwarding has not yet been configured.
 - pfSense logs have not yet been validated in Splunk.
@@ -82,12 +83,11 @@ Milestone 6 must prove that Splunk can receive and display logs from the initial
 
 ## Next Actions
 
-1. Create a Splunk UDP network input on port `5514` for pfSense syslog.
-2. Configure pfSense to forward logs to `SIEM-SPLUNK01`.
-3. Validate pfSense logs in Splunk.
-4. Configure Windows Event Log forwarding from `TEST-WIN10-LAN1`.
-5. Validate Windows logs in Splunk.
-6. Document source IPs, ports, screenshots, and validation searches.
+1. Configure pfSense to forward logs to `SIEM-SPLUNK01` on UDP `5514`.
+2. Validate pfSense logs in Splunk.
+3. Configure Windows Event Log forwarding from `TEST-WIN10-LAN1`.
+4. Validate Windows logs in Splunk.
+5. Document source IPs, ports, screenshots, and validation searches.
 
 ## Evidence Captured
 
@@ -107,6 +107,6 @@ Milestone 6 is complete only when:
 
 ## Current Status Summary
 
-P1-2 is at the starting point of Milestone 6.
+P1-2 is in Milestone 6.
 
-The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. The current work is to prove that pfSense and Windows logs can reach Splunk and become searchable before expanding the telemetry pipeline.
+The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is now configured to listen for pfSense syslog on UDP `5514`, but pfSense forwarding and Splunk event validation are still needed before this log source can be marked validated.

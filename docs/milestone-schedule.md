@@ -90,6 +90,8 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 - pfSense syslog requires a Splunk UDP network input before firewall logs can be ingested.
 - UDP `5514` is preferred for this lab instead of UDP `514` because it avoids binding Splunk directly to the standard privileged syslog port.
+- The chosen Splunk index and sourcetype for pfSense syslog should be documented once selected so validation searches are repeatable.
+- Initial pfSense syslog input uses sourcetype `syslog` and index `default` / `main` until a dedicated pfSense index or parser is intentionally added.
 
 ### Completion Criteria
 
