@@ -6,21 +6,21 @@ P1-2 is part of Portfolio 1 (P1) — Lab Infrastructure, Telemetry, and Investig
 
 ## Overview
 
-This repo is planned to document how I will build a centralized Windows telemetry pipeline using **Windows Event Forwarding (WEF)** and **Sysmon**, then validate that the same telemetry is searchable in **Wazuh**, **Elastic**, and **Splunk**.
+This repo documents the buildout of a telemetry pipeline that starts by proving initial log flow into **Splunk**, then expands into **Windows Event Forwarding (WEF)**, **Sysmon**, **Wazuh**, and **Elastic** validation.
 
 The goal is to practice realistic SOC workflows: collecting endpoint signals, confirming end-to-end delivery, and building repeatable investigation pivots across multiple platforms.
 
-This project is part of Portfolio 1 and is planned as the next phase after `P1-1-proxmox-segmentation-lab`.
+This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-lab`.
 
 ---
 
 ## Current Status
 
-**Current status:** Planned  
-**Execution status:** Not yet started  
+**Current status:** Active  
+**Execution status:** Milestone 6 — Logging Foundation  
 **Prerequisite:** `P1-1-proxmox-segmentation-lab`
 
-This repo is being prepared in advance so the pipeline design, host roles, validation steps, supporting hosts, and expected deliverables are already defined before implementation begins.
+P1-1 established the segmented Proxmox lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
 
 ---
 
@@ -81,32 +81,38 @@ This project is intended to demonstrate:
 
 ## Planned Workflow
 
-Once implementation begins, the intended workflow for this repo is:
+The intended workflow for this repo is:
 
-### 1. Decide collector placement
+### 1. Prove initial Splunk ingestion
+- confirm Splunk is running and reachable
+- configure pfSense syslog forwarding to Splunk
+- configure Windows Event Log forwarding from the first Windows endpoint
+- validate both log sources in Splunk searches
+
+### 2. Decide collector placement
 - choose between `AD-DC01` and a dedicated `WEC01`
 - document the reasoning and design impact
 
-### 2. Prepare supporting hosts
+### 3. Prepare supporting hosts
 - finalize which additional hosts are needed for telemetry generation and validation
 - add supporting hosts only when they serve a telemetry, validation, detection, or investigation purpose
 
-### 3. Deploy Sysmon to endpoints
+### 4. Deploy Sysmon to endpoints
 - install Sysmon on Windows lab endpoints
 - apply a tuned configuration
 - confirm event generation locally
 
-### 4. Configure WEF
+### 5. Configure WEF
 - create a source-initiated subscription
 - forward selected Security and Sysmon events to the collector
 - confirm event arrival in Event Viewer
 
-### 5. Send telemetry to downstream platforms
+### 6. Send telemetry to downstream platforms
 - validate Wazuh ingestion
 - validate Elastic ingestion
 - validate Splunk ingestion
 
-### 6. Run test activity and collect evidence
+### 7. Run test activity and collect evidence
 - generate known test events
 - confirm visibility in each platform
 - capture screenshots and notes
@@ -133,14 +139,16 @@ This repo is expected to eventually include:
 
 ## Planned Next Steps
 
-When work begins on this repo, the initial implementation focus will likely be:
+The current implementation focus is Milestone 6:
 
-- finalize collector placement
-- prepare the first Windows endpoint for telemetry onboarding
-- install Sysmon on the first Windows endpoint
-- configure WEF forwarding
-- validate collector-side log receipt
-- document the first successful ingestion path
+- confirm Splunk is installed and running on `SIEM-SPLUNK01`
+- confirm Splunk Web UI is reachable
+- configure Splunk to receive pfSense syslog
+- configure pfSense to forward logs to `SIEM-SPLUNK01`
+- validate pfSense logs in Splunk
+- configure Windows Event Log forwarding from `TEST-WIN10-LAN1`
+- validate Windows logs in Splunk
+- document source IPs, ports, screenshots, and validation searches
 
 ---
 

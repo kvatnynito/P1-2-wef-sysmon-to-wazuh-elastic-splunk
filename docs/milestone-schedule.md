@@ -71,7 +71,7 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 - Confirm Splunk is installed and running on `SIEM-SPLUNK01`.
 - Confirm Splunk Web UI is reachable.
-- Configure Splunk to receive pfSense syslog.
+- Create a Splunk UDP network input on port `5514` for pfSense syslog.
 - Configure pfSense logs to forward to `SIEM-SPLUNK01`.
 - Verify pfSense firewall logs appear in Splunk.
 - Configure Windows log forwarding from `TEST-WIN10-LAN1`.
@@ -83,8 +83,13 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 | Source | Destination | Method | Port | Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 514 | Planned |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Planned |
 | `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
+
+### Milestone 6 Configuration Notes
+
+- pfSense syslog requires a Splunk UDP network input before firewall logs can be ingested.
+- UDP `5514` is preferred for this lab instead of UDP `514` because it avoids binding Splunk directly to the standard privileged syslog port.
 
 ### Completion Criteria
 
@@ -104,7 +109,12 @@ Milestone 6 is complete only when:
 
 ### Status
 
-Planned.
+In progress.
+
+### Validation Evidence
+
+- Splunk Web UI reachable from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
+- Screenshot: `screenshots/milestone06-splunk-web-ui-reachable-from-win10.png`
 
 ---
 
