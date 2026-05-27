@@ -55,7 +55,7 @@ Milestone 6 focuses on validating two initial log sources:
 
 | Source | Destination | Method | Port | Current Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | In progress - pfSense remote logging section located |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Validated - 901 events confirmed in Splunk, host=10.10.10.1, udp:5514 |
 | `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
 
 ## Current Progress
@@ -66,10 +66,9 @@ Milestone 6 focuses on validating two initial log sources:
 - Splunk Web UI was revalidated from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
 - Splunk UDP network input for pfSense syslog was configured on UDP `5514` with sourcetype `syslog` and index `default` / `main`.
 - pfSense `Status > System Logs > Settings` page was reached for remote logging configuration.
-- pfSense `Remote Logging Options` section was located; `Enable Remote Logging` is not yet enabled.
+- pfSense remote logging configured to forward to SIEM-SPLUNK01 on UDP 5514.
+- pfSense logs validated in Splunk — 901 events returned, host=10.10.10.1, source=udp:5514, sourcetype=syslog, filterlog entries confirmed.
 - P1-2 telemetry ingestion validation is in progress.
-- pfSense log forwarding has not yet been configured.
-- pfSense logs have not yet been validated in Splunk.
 - Windows Event Log forwarding has not yet been configured.
 - Windows logs have not yet been validated in Splunk.
 - Sysmon has not been deployed.
@@ -85,18 +84,16 @@ Milestone 6 must prove that Splunk can receive and display logs from the initial
 
 ## Next Actions
 
-1. Enable pfSense remote logging under `Status > System Logs > Settings`.
-2. Configure pfSense to forward logs to `SIEM-SPLUNK01` on UDP `5514`.
-3. Validate pfSense logs in Splunk.
-4. Configure Windows Event Log forwarding from `TEST-WIN10-LAN1`.
-5. Validate Windows logs in Splunk.
-6. Document source IPs, ports, screenshots, and validation searches.
+1. Configure Windows Event Log forwarding from `TEST-WIN10-LAN1`.
+2. Validate Windows logs in Splunk.
+3. Document source IPs, ports, screenshots, and validation searches.
 
 ## Evidence Captured
 
 - `screenshots/milestone06-siem-splunk01-ip-confirmed.png`
 - `screenshots/milestone06-splunk-service-running.png`
 - `screenshots/milestone06-splunk-web-ui-reachable-from-win10.png`
+- `screenshots/milestone06/step05-splunk-pfsense-events-visible.png` (private runbook — pfSense validation, 901 events)
 
 ## Milestone 6 Completion Criteria
 
@@ -112,4 +109,4 @@ Milestone 6 is complete only when:
 
 P1-2 is in Milestone 6.
 
-The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is now configured to listen for pfSense syslog on UDP `5514`, and the pfSense Remote Logging Options section has been located. pfSense forwarding and Splunk event validation are still needed before this log source can be marked validated.
+The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is configured to listen for pfSense syslog on UDP `5514`. pfSense remote logging is now active and validated — 901 events were confirmed in Splunk with host=10.10.10.1, source=udp:5514, sourcetype=syslog, and filterlog entries visible. The next step is Windows Event Log forwarding from `TEST-WIN10-LAN1`.
