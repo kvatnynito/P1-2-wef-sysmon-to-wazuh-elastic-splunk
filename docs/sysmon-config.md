@@ -2,7 +2,7 @@
 Status: Draft (to be updated during implementation)
 
 ## Goals
-- Install Sysmon on endpoints
+- Install Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) on endpoints
 - Use a tuned config to capture high-value events
 
 ## Implementation notes to add

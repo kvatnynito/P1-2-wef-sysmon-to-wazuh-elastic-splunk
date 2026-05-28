@@ -6,13 +6,13 @@ Create and upload: `pipeline-diagram.png`
 
 Include (high-level only):
 - [ ] Endpoints: AD-WIN10, AD-WIN11
-- [ ] Telemetry sources: Windows Security + Sysmon
-- [ ] Transport: WEF (source-initiated subscription) → Collector (AD-DC01 or WEC01)
-- [ ] Downstream platforms: Wazuh, Elastic, Splunk Free
+- [ ] Telemetry (the stream of log and event data collected from systems to support monitoring and investigation) sources: Windows Security + Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections)
+- [ ] Transport: WEF (Windows Event Forwarding — a built-in Windows feature that pushes event logs from endpoint machines to a central collector) (source-initiated subscription (a WEF configuration that tells the collector which endpoints to pull logs from and which events to collect)) → Collector (a Windows machine that receives forwarded logs from multiple endpoints) (AD-DC01 or WEC01 (Windows Event Collector — the server-side role that receives forwarded Windows logs))
+- [ ] Downstream platforms: Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring), Elastic (the Elasticsearch and Kibana stack — a search and visualization platform used to store and query log data), Splunk Free
 - [ ] Arrow labels showing flow direction (Endpoints → Collector → Platforms)
 
 Do NOT include:
-- [ ] WAN/public IPs, domains/DDNS, VPN endpoints/keys
+- [ ] WAN (Wide Area Network — the public internet-facing side of the network) / public IPs, domains/DDNS, VPN endpoints/keys
 - [ ] Port forwards, exposed services, credentials/secrets
 
 Optional:
