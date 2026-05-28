@@ -47,7 +47,7 @@ The segmented lab foundation already exists in `P1-1-proxmox-segmentation-lab`, 
 - `VULN-METASPLOITABLE2`
 - `SIEM-SPLUNK01`
 
-This repo focuses on telemetry collection, forwarding, validation, and investigation readiness.
+This repo focuses on telemetry (the stream of log and event data collected from systems to support monitoring and investigation) collection, forwarding, validation, and investigation readiness.
 
 Splunk was installed and its Web UI was validated in P1-1, but telemetry ingestion was not yet tested.
 
@@ -61,7 +61,7 @@ Additional hosts may be created during this project, but only when they support 
 
 ### Goal
 
-Prove that pfSense and Windows logs flow into Splunk before expanding the lab.
+Prove that pfSense (an open-source firewall and router acting as the network gateway in this lab) and Windows logs flow into Splunk before expanding the lab.
 
 ### Core Rule
 
@@ -71,11 +71,11 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 - Confirm Splunk is installed and running on `SIEM-SPLUNK01`.
 - Confirm Splunk Web UI is reachable.
-- Create a Splunk UDP network input on port `5514` for pfSense syslog.
+- Create a Splunk UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) network input on port `5514` for pfSense syslog (a standard format that network devices like firewalls use to send log messages).
 - Configure pfSense logs to forward to `SIEM-SPLUNK01`.
 - Verify pfSense firewall logs appear in Splunk.
 - Configure Windows log forwarding from `TEST-WIN10-LAN1`.
-- Prefer Splunk Universal Forwarder for the first Windows source unless there is a reason to use WEF immediately.
+- Prefer Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) for the first Windows source unless there is a reason to use WEF (Windows Event Forwarding — a built-in Windows feature that pushes event logs from endpoint machines to a central collector) immediately.
 - Verify Windows logs appear in Splunk.
 - Document log sources in GitHub.
 
@@ -83,15 +83,15 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 | Source | Destination | Method | Port | Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Validated |
-| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Validated |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` (SIEM — Security Information and Event Management — a platform that collects, stores, and searches log data from many sources) | Syslog | UDP 5514 | Validated |
+| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) 9997 | Validated |
 
 ### Milestone 6 Configuration Notes
 
 - pfSense syslog requires a Splunk UDP network input before firewall logs can be ingested.
 - UDP `5514` is preferred for this lab instead of UDP `514` because it avoids binding Splunk directly to the standard privileged syslog port.
 - The chosen Splunk index and sourcetype for pfSense syslog should be documented once selected so validation searches are repeatable.
-- Initial pfSense syslog input uses sourcetype `syslog` and index `default` / `main` until a dedicated pfSense index or parser is intentionally added.
+- Initial pfSense syslog input uses sourcetype (a label Splunk uses to identify what kind of log data came in, so it knows how to parse it) `syslog` and index (the storage bucket Splunk uses to organize incoming log data) `default` / `main` until a dedicated pfSense index or parser is intentionally added.
 
 ### Completion Criteria
 
@@ -115,17 +115,46 @@ Complete.
 
 ### Validation Evidence
 
+- `SIEM-SPLUNK01` confirmed at IP `10.10.10.20/24` on the management network.
+- Screenshot: `screenshots/milestone06-siem-splunk01-ip-confirmed.png`
+
+![SIEM-SPLUNK01 IP address confirmed at 10.10.10.20](../screenshots/milestone06-siem-splunk01-ip-confirmed.png)
+
+- Splunk service confirmed active (running) on `SIEM-SPLUNK01`.
+- Screenshot: `screenshots/milestone06-splunk-service-running.png`
+
+![Splunk service running on SIEM-SPLUNK01](../screenshots/milestone06-splunk-service-running.png)
+
 - Splunk Web UI reachable from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
 - Screenshot: `screenshots/milestone06-splunk-web-ui-reachable-from-win10.png`
+
+![Splunk Web UI reachable from TEST-WIN10-LAN1](../screenshots/milestone06-splunk-web-ui-reachable-from-win10.png)
+
 - Splunk UDP `5514` input created for pfSense syslog with sourcetype `syslog` and index `default` / `main`.
 - Screenshot: `screenshots/milestone06-splunk-udp5514-input-configured.png`
+
+![Splunk UDP 5514 input created successfully](../screenshots/milestone06-splunk-udp5514-input-configured.png)
+
 - pfSense remote logging configured to send to `SIEM-SPLUNK01` at `10.10.10.20:5514`.
 - Screenshot: `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
-- Splunk validation search `index=main sourcetype=syslog` returned 901 pfSense events with host `10.10.10.1`, source `udp:5514`, and filterlog entries visible.
+
+![pfSense remote logging configured to 10.10.10.20:5514](../screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png)
+
+- Splunk validation search `index=main sourcetype=syslog` returned 901 pfSense events with host `10.10.10.1`, source `udp:5514`, and filterlog (pfSense's built-in logging format for firewall rule activity) entries visible.
 - Screenshot: `screenshots/milestone06-splunk-pfsense-events-visible.png`
-- Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`. `inputs.conf` manually created with Application, Security, and System channels enabled.
+
+![Splunk search returning 901 pfSense syslog events](../screenshots/milestone06-splunk-pfsense-events-visible.png)
+
+- Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`. `inputs.conf` (a Splunk forwarder configuration file that defines which logs to collect and send) manually created with Application, Security, and System channels enabled.
+- Splunk TCP `9997` receiving port enabled on `SIEM-SPLUNK01`.
+- Screenshot: `screenshots/milestone06-splunk-tcp9997-receiving-enabled.png`
+
+![Splunk TCP 9997 receiving port enabled](../screenshots/milestone06-splunk-tcp9997-receiving-enabled.png)
+
 - Splunk validation search `index=* sourcetype=WinEventLog*` returned Windows Security events with host `DESKTOP-8K5AHHR`, sourcetype `WinEventLog:Security`.
 - Screenshot: `screenshots/milestone06-splunk-windows-events-visible.png`
+
+![Splunk search returning Windows Security events from TEST-WIN10-LAN1](../screenshots/milestone06-splunk-windows-events-visible.png)
 
 ---
 
@@ -137,7 +166,7 @@ Decide collector placement and prepare the first Windows endpoint for the next t
 
 ### Tasks
 
-- Decide whether the collector will be `AD-DC01` or a dedicated `WEC01`.
+- Decide whether the collector (a Windows machine that receives forwarded logs from multiple endpoints) will be `AD-DC01` (domain controller — the Windows Server that manages user accounts, authentication, and group policy for the domain) or a dedicated `WEC01` (Windows Event Collector — the server-side role that receives forwarded Windows logs).
 - Document reasoning and design tradeoffs.
 - Confirm first endpoint selection for WEF/Sysmon onboarding.
 - Prepare the endpoint for the next telemetry phase.
@@ -164,7 +193,7 @@ Planned.
 
 ### Goal
 
-Deploy Sysmon and confirm local event generation on the first Windows endpoint.
+Deploy Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) and confirm local event generation on the first Windows endpoint.
 
 ### Tasks
 
@@ -203,7 +232,7 @@ Configure WEF and confirm event receipt at the collector.
 
 ### Tasks
 
-- Configure a source-initiated WEF subscription.
+- Configure a source-initiated WEF subscription (a WEF configuration that tells the collector which endpoints to pull logs from and which events to collect).
 - Forward selected Security and Sysmon events.
 - Confirm event arrival on the collector.
 - Document subscription choices.
@@ -232,7 +261,7 @@ Planned.
 
 ### Goal
 
-Validate telemetry ingestion in Wazuh, Elastic, and Splunk.
+Validate telemetry ingestion (the process of receiving log data into a platform like Splunk) in Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring), Elastic (the Elasticsearch and Kibana stack — a search and visualization platform used to store and query log data), and Splunk.
 
 ### Tasks
 
@@ -275,7 +304,7 @@ Add `LAN1-FILE01` and expand Windows telemetry coverage.
 - Connect `LAN1-FILE01` to LAN1 / vmbr1.
 - Configure static IP.
 - Join the system to the domain if appropriate.
-- Create a basic SMB file share.
+- Create a basic SMB (Server Message Block — a Windows file-sharing protocol) file share.
 - Generate file activity and authentication activity.
 - Onboard the host into the telemetry pipeline.
 - Validate visibility in the collector and downstream platforms.
@@ -351,7 +380,7 @@ Add `VULN-DVWA01` and validate web activity telemetry.
 - Connect `VULN-DVWA01` to LAN2 / vmbr2.
 - Install Ubuntu Server.
 - Install Docker.
-- Deploy DVWA.
+- Deploy DVWA (Damn Vulnerable Web Application — a deliberately insecure web app used for security testing practice).
 - Confirm DVWA is reachable from `ATTACK-KALI01`.
 - Generate basic web traffic.
 - Validate relevant firewall, IDS, and SIEM visibility.

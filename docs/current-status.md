@@ -16,11 +16,11 @@
 
 P1-2 is now active.
 
-This project begins after completion of `P1-1-proxmox-segmentation-lab`, which established the segmented Proxmox lab foundation.
+This project begins after completion of `P1-1-proxmox-segmentation-lab`, which established the segmented Proxmox (an open-source virtualization platform used to run multiple virtual machines on one physical host) lab foundation.
 
-P1-2 focuses on telemetry collection, forwarding, validation, and investigation readiness.
+P1-2 focuses on telemetry (the stream of log and event data collected from systems to support monitoring and investigation) collection, forwarding, validation, and investigation readiness.
 
-Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense syslog ingestion and Windows Event Log ingestion have both been validated.
+Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) ingestion (the process of receiving log data into a platform like Splunk) and Windows Event Log ingestion have both been validated.
 
 ## Current Milestone
 
@@ -36,7 +36,7 @@ Milestone 6 is complete. The current objective is to decide collector placement 
 
 Milestone 7 focuses on:
 
-- Deciding whether the WEF collector will be `AD-DC01` or a dedicated `WEC01`
+- Deciding whether the WEF (Windows Event Forwarding — a built-in Windows feature that pushes event logs from endpoint machines to a central collector) collector (a Windows machine that receives forwarded logs from multiple endpoints) will be `AD-DC01` (domain controller — the Windows Server that manages user accounts, authentication, and group policy for the domain) or a dedicated `WEC01` (Windows Event Collector — the server-side role that receives forwarded Windows logs)
 - Documenting the reasoning and design tradeoffs
 - Confirming the first endpoint is ready for WEF and Sysmon onboarding
 
@@ -56,8 +56,8 @@ Milestone 7 focuses on:
 
 | Source | Destination | Method | Port | Current Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Validated - 901 events confirmed in Splunk, host=10.10.10.1, udp:5514 |
-| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Validated - WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` (SIEM — Security Information and Event Management — a platform that collects, stores, and searches log data from many sources) | Syslog | UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) 5514 | Validated - 901 events confirmed in Splunk, host=10.10.10.1, udp:5514 |
+| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) | TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) 9997 | Validated - WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR |
 
 ## Current Progress
 
@@ -65,18 +65,18 @@ Milestone 7 focuses on:
 - Splunk is installed on `SIEM-SPLUNK01`.
 - Splunk Web UI was validated during P1-1.
 - Splunk Web UI was revalidated from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
-- Splunk UDP network input for pfSense syslog was configured on UDP `5514` with sourcetype `syslog` and index `default` / `main`.
+- Splunk UDP network input for pfSense syslog was configured on UDP `5514` with sourcetype (a label Splunk uses to identify what kind of log data came in, so it knows how to parse it) `syslog` and index (the storage bucket Splunk uses to organize incoming log data) `default` / `main`.
 - pfSense `Status > System Logs > Settings` page was reached for remote logging configuration.
 - pfSense remote logging configured to forward to SIEM-SPLUNK01 on UDP 5514.
-- pfSense logs validated in Splunk — 901 events returned, host=10.10.10.1, source=udp:5514, sourcetype=syslog, filterlog entries confirmed.
+- pfSense logs validated in Splunk — 901 events returned, host=10.10.10.1, source=udp:5514, sourcetype=syslog, filterlog (pfSense's built-in logging format for firewall rule activity) entries confirmed.
 - Milestone 6 complete — both initial log sources validated in Splunk.
 - Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`.
-- `inputs.conf` manually created with Application, Security, and System channels enabled.
+- `inputs.conf` (a Splunk forwarder configuration file that defines which logs to collect and send) manually created with Application, Security, and System channels enabled.
 - Windows Event Log forwarding validated — WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR, 17+ events visible.
-- Sysmon has not been deployed.
+- Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) has not been deployed.
 - WEF has not been configured.
-- Wazuh ingestion has not been validated.
-- Elastic ingestion has not been validated.
+- Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring) ingestion has not been validated.
+- Elastic (the Elasticsearch and Kibana stack — a search and visualization platform used to store and query log data) ingestion has not been validated.
 
 ## Current Rule
 

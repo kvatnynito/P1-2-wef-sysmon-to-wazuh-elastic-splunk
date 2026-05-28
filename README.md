@@ -6,9 +6,9 @@ P1-2 is part of Portfolio 1 (P1) — Lab Infrastructure, Telemetry, and Investig
 
 ## Overview
 
-This repo documents the buildout of a telemetry pipeline that starts by proving initial log flow into **Splunk**, then expands into **Windows Event Forwarding (WEF)**, **Sysmon**, **Wazuh**, and **Elastic** validation.
+This repo documents the buildout of a telemetry (the stream of log and event data collected from systems to support monitoring and investigation) pipeline that starts by proving initial log flow into **Splunk**, then expands into **Windows Event Forwarding (WEF)** (WEF — a built-in Windows feature that pushes event logs from endpoint machines to a central collector), **Sysmon** (a free Microsoft tool that records detailed system activity like process launches and network connections), **Wazuh** (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring), and **Elastic** (the Elasticsearch and Kibana stack — a search and visualization platform used to store and query log data) validation.
 
-The goal is to practice realistic SOC workflows: collecting endpoint signals, confirming end-to-end delivery, and building repeatable investigation pivots across multiple platforms.
+The goal is to practice realistic SOC (Security Operations Center — the team that monitors systems for threats and responds to alerts) workflows: collecting endpoint signals, confirming end-to-end delivery, and building repeatable investigation pivots across multiple platforms.
 
 This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-lab`.
 
@@ -20,9 +20,9 @@ This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-
 **Execution status:** Milestone 7 — Collector Placement and First Endpoint Prep  
 **Prerequisite:** `P1-1-proxmox-segmentation-lab`
 
-P1-1 established the segmented Proxmox lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
+P1-1 established the segmented Proxmox (an open-source virtualization platform used to run multiple virtual machines on one physical host) lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
 
-Milestone 6 is complete. pfSense syslog forwarding validated on UDP `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder on TCP `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 begins next: collector placement decision and first endpoint prep.
+Milestone 6 is complete. pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) forwarding validated on UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) on TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 begins next: collector placement decision and first endpoint prep.
 
 ---
 
@@ -52,7 +52,7 @@ This project is intended to demonstrate:
 
 - setting up **WEF (source-initiated subscription)** to forward Security and Sysmon events from endpoints to a collector
 - deploying **Sysmon** with a tuned configuration on lab endpoints
-- ingesting that telemetry into **Wazuh**, **Elastic**, and **Splunk**
+- ingesting (the process of receiving log data into a platform like Splunk) that telemetry into **Wazuh**, **Elastic**, and **Splunk**
 - validating the pipeline using known test events
 - capturing screenshots and notes that prove successful end-to-end delivery
 
@@ -92,7 +92,7 @@ The intended workflow for this repo is:
 - validate both log sources in Splunk searches
 
 ### 2. Decide collector placement
-- choose between `AD-DC01` and a dedicated `WEC01`
+- choose between `AD-DC01` and a dedicated `WEC01` (a Windows machine that receives forwarded logs from multiple endpoints)
 - document the reasoning and design impact
 
 ### 3. Prepare supporting hosts
@@ -105,7 +105,7 @@ The intended workflow for this repo is:
 - confirm event generation locally
 
 ### 5. Configure WEF
-- create a source-initiated subscription
+- create a source-initiated subscription (a WEF configuration that tells the collector which endpoints to pull logs from and which events to collect)
 - forward selected Security and Sysmon events to the collector
 - confirm event arrival in Event Viewer
 
@@ -165,7 +165,7 @@ Planned hosts used during implementation:
 - **Collector:** TBD (`AD-DC01` vs dedicated `WEC01`)
 - **Endpoints:** `AD-WIN10` / `AD-WIN11`
 - **Supporting hosts as needed:** `LAN1-FILE01`, `VULN-DVWA01`, `TEST-WIN2019-LAN2`, `SCAN-OPENVAS01`
-- **Destinations:** Wazuh / Elastic / Splunk
+- **Destinations:** Wazuh / Elastic / Splunk (SIEM — Security Information and Event Management — platforms that collect, store, and search log data from many sources)
 
 ---
 
@@ -200,7 +200,7 @@ Endpoints (domain-joined Windows)
   **Why it’s included:** Elastic is useful for fast searching and field-based pivots, which makes it a strong platform for investigation workflows.
 
 - **Splunk**  
-  **Why it’s included:** Splunk is common in SOC environments, and I want hands-on repetition with SPL searches and triage patterns.
+  **Why it’s included:** Splunk is common in SOC environments, and I want hands-on repetition with SPL (Splunk Processing Language — the search syntax used to query Splunk) searches and triage patterns.
 
 ## What’s Next
 
