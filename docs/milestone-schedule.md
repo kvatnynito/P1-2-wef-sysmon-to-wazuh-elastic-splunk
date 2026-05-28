@@ -83,7 +83,7 @@ Do not add more VMs during this milestone unless Splunk logging is working first
 
 | Source | Destination | Method | Port | Status |
 |---|---|---|---:|---|
-| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Planned |
+| `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Validated |
 | `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
 
 ### Milestone 6 Configuration Notes
@@ -117,6 +117,12 @@ In progress.
 
 - Splunk Web UI reachable from `TEST-WIN10-LAN1` at `http://10.10.10.20:8000`.
 - Screenshot: `screenshots/milestone06-splunk-web-ui-reachable-from-win10.png`
+- Splunk UDP `5514` input created for pfSense syslog with sourcetype `syslog` and index `default` / `main`.
+- Screenshot: `screenshots/milestone06-splunk-udp5514-input-configured.png`
+- pfSense remote logging configured to send to `SIEM-SPLUNK01` at `10.10.10.20:5514`.
+- Screenshot: `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
+- Splunk validation search `index=main sourcetype=syslog` returned 901 pfSense events with host `10.10.10.1`, source `udp:5514`, and filterlog entries visible.
+- Screenshot: `screenshots/milestone06-splunk-pfsense-events-visible.png`
 
 ---
 
