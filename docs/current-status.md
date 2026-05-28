@@ -73,6 +73,11 @@ Milestone 7 focuses on:
 - Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`.
 - `inputs.conf` (a Splunk forwarder configuration file that defines which logs to collect and send) manually created with Application, Security, and System channels enabled.
 - Windows Event Log forwarding validated — WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR, 17+ events visible.
+- Collector placement decision made: dedicated `WEC01` chosen over `AD-DC01`; role separation is production standard and matches a real SOC environment.
+- `WEC01` VM provisioned in Proxmox (VMID 107, Windows Server 2022, LAN1, static IP 10.10.10.30).
+- `WEC01` computer name set, static IP assigned (10.10.10.30), DNS pointed at AD-DC01 (10.10.10.10).
+- `AD-DC01` promoted to domain controller — `corp.local` domain created (forest and domain functional level: Windows Server 2016, DNS on AD-DC01).
+- `WEC01` domain join not yet complete — accidentally joined workgroup instead of domain; fix in progress.
 - Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) has not been deployed.
 - WEF has not been configured.
 - Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring) ingestion has not been validated.
@@ -84,9 +89,10 @@ Do not begin Sysmon deployment or WEF configuration until the collector placemen
 
 ## Next Actions
 
-1. Decide collector placement — `AD-DC01` or dedicated `WEC01`. Document the reasoning.
-2. Confirm `TEST-WIN10-LAN1` is ready for WEF and Sysmon onboarding.
-3. Document the decision and endpoint readiness in GitHub.
+1. On `WEC01`: System Properties → Change → select Domain radio button → type `corp.local` → enter domain admin credentials → reboot.
+2. Confirm `WEC01` Local Server shows domain: `corp.local`.
+3. Confirm `TEST-WIN10-LAN1` endpoint readiness for WEF and Sysmon onboarding.
+4. Document Milestone 7 progress in public repo.
 
 ## Evidence Captured
 
@@ -113,4 +119,4 @@ Milestone 6 is complete only when:
 
 P1-2 is in Milestone 7 — Collector Placement and First Endpoint Prep.
 
-Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. The next step is deciding whether the WEF collector will be `AD-DC01` or a dedicated `WEC01`, and confirming the first endpoint is ready for WEF and Sysmon onboarding.
+Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. In Milestone 7, the collector placement decision has been made: a dedicated `WEC01` VM was provisioned (VMID 107, Windows Server 2022, 10.10.10.30) to keep the collector role separate from `AD-DC01`, matching production SOC practice. `AD-DC01` has been promoted to domain controller and the `corp.local` domain created. `WEC01` has its computer name and static IP configured but is not yet domain-joined — the machine was accidentally added to a workgroup named CORP.LOCAL instead of the corp.local domain. The next step is to reopen System Properties on `WEC01`, select the Domain radio button, enter `corp.local`, and complete the domain join.
