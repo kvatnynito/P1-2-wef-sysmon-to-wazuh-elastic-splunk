@@ -25,11 +25,11 @@ This file shows the intended project roadmap for P1-2 only. For the current live
 
 ## Current Milestone
 
-- Milestone 6 — Logging Foundation
+- Milestone 7 — Collector Placement and First Endpoint Prep
 
 ## Completed Milestones
 
-- None yet.
+- Milestone 6 — Logging Foundation
 
 ## Transition Note
 
@@ -111,7 +111,7 @@ Milestone 6 is complete only when:
 
 ### Status
 
-In progress.
+Complete.
 
 ### Validation Evidence
 

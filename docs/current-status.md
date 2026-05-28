@@ -24,20 +24,21 @@ Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense 
 
 ## Current Milestone
 
-**Active milestone:** Milestone 6 — Logging Foundation
+**Active milestone:** Milestone 7 — Collector Placement and First Endpoint Prep
 
 ## Completed P1-2 Milestones
 
-None yet.
+- Milestone 6 — Logging Foundation
 
 ## Current Objective
 
-The current objective is to prove initial log flow into Splunk before expanding the telemetry design or adding more hosts.
+Milestone 6 is complete. The current objective is to decide collector placement and prepare the first Windows endpoint for the next telemetry phase.
 
-Milestone 6 focuses on validating two initial log sources:
+Milestone 7 focuses on:
 
-- pfSense logs forwarded to `SIEM-SPLUNK01`
-- Windows Event Logs forwarded from `TEST-WIN10-LAN1` to `SIEM-SPLUNK01`
+- Deciding whether the WEF collector will be `AD-DC01` or a dedicated `WEC01`
+- Documenting the reasoning and design tradeoffs
+- Confirming the first endpoint is ready for WEF and Sysmon onboarding
 
 ## Current Lab Systems Available from P1-1
 
@@ -68,7 +69,7 @@ Milestone 6 focuses on validating two initial log sources:
 - pfSense `Status > System Logs > Settings` page was reached for remote logging configuration.
 - pfSense remote logging configured to forward to SIEM-SPLUNK01 on UDP 5514.
 - pfSense logs validated in Splunk — 901 events returned, host=10.10.10.1, source=udp:5514, sourcetype=syslog, filterlog entries confirmed.
-- P1-2 telemetry ingestion validation is in progress.
+- Milestone 6 complete — both initial log sources validated in Splunk.
 - Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`.
 - `inputs.conf` manually created with Application, Security, and System channels enabled.
 - Windows Event Log forwarding validated — WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR, 17+ events visible.
@@ -79,14 +80,13 @@ Milestone 6 focuses on validating two initial log sources:
 
 ## Current Rule
 
-Do not add more VMs during Milestone 6 unless Splunk logging is working first.
-
-Milestone 6 must prove that Splunk can receive and display logs from the initial pfSense and Windows sources before the project moves into collector placement, Sysmon, WEF, Wazuh, Elastic, or additional telemetry-supporting hosts.
+Do not begin Sysmon deployment or WEF configuration until the collector placement decision is documented and the first endpoint is confirmed ready.
 
 ## Next Actions
 
-1. Complete Milestone 6 documentation — confirm all completion criteria are met and evidence is recorded.
-2. Begin Milestone 7 — collector placement decision and first endpoint prep.
+1. Decide collector placement — `AD-DC01` or dedicated `WEC01`. Document the reasoning.
+2. Confirm `TEST-WIN10-LAN1` is ready for WEF and Sysmon onboarding.
+3. Document the decision and endpoint readiness in GitHub.
 
 ## Evidence Captured
 
@@ -111,6 +111,6 @@ Milestone 6 is complete only when:
 
 ## Current Status Summary
 
-P1-2 is in Milestone 6.
+P1-2 is in Milestone 7 — Collector Placement and First Endpoint Prep.
 
-The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is configured to listen for pfSense syslog on UDP `5514`. pfSense remote logging is validated — 901+ events confirmed in Splunk with host=10.10.10.1, source=udp:5514. Windows Event Log forwarding is also validated — WinEventLog:Security events confirmed from DESKTOP-8K5AHHR via Splunk Universal Forwarder on TCP 9997. Both Milestone 6 log sources are validated. Milestone 6 completion documentation is the next step.
+Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. The next step is deciding whether the WEF collector will be `AD-DC01` or a dedicated `WEC01`, and confirming the first endpoint is ready for WEF and Sysmon onboarding.
