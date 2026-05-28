@@ -17,12 +17,12 @@ This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-
 ## Current Status
 
 **Current status:** Active  
-**Execution status:** Milestone 6 — Logging Foundation  
+**Execution status:** Milestone 7 — Collector Placement and First Endpoint Prep  
 **Prerequisite:** `P1-1-proxmox-segmentation-lab`
 
 P1-1 established the segmented Proxmox lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
 
-Milestone 6 progress so far: Splunk is running, Splunk Web is reachable from `TEST-WIN10-LAN1`, and pfSense syslog forwarding to Splunk has been validated on UDP `5514`. Windows Event Log forwarding from `TEST-WIN10-LAN1` is still planned.
+Milestone 6 is complete. pfSense syslog forwarding validated on UDP `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder on TCP `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 begins next: collector placement decision and first endpoint prep.
 
 ---
 
@@ -66,7 +66,7 @@ This project is intended to demonstrate:
 > Splunk was installed and its Web UI was validated in P1-1, but telemetry ingestion was not yet tested.
 > The first actionable milestone in P1-2 is Milestone 6: proving initial log flow into Splunk.
 
-- [ ] Milestone 6: Prove pfSense and Windows logs flow into Splunk
+- [x] Milestone 6: Prove pfSense and Windows logs flow into Splunk
 - [ ] Milestone 7: Decide collector placement and prepare first Windows endpoint
 - [ ] Milestone 8: Deploy Sysmon and confirm local event generation
 - [ ] Milestone 9: Configure WEF and confirm collector-side event receipt
