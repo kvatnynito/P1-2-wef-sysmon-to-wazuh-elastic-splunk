@@ -20,7 +20,7 @@ This project begins after completion of `P1-1-proxmox-segmentation-lab`, which e
 
 P1-2 focuses on telemetry collection, forwarding, validation, and investigation readiness.
 
-Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense syslog ingestion has now been validated, and Windows Event Log ingestion is still planned.
+Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense syslog ingestion and Windows Event Log ingestion have both been validated.
 
 ## Current Milestone
 
@@ -56,7 +56,7 @@ Milestone 6 focuses on validating two initial log sources:
 | Source | Destination | Method | Port | Current Status |
 |---|---|---|---:|---|
 | `FW-EDGE01` / pfSense | `SIEM-SPLUNK01` | Syslog | UDP 5514 | Validated - 901 events confirmed in Splunk, host=10.10.10.1, udp:5514 |
-| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Planned |
+| `TEST-WIN10-LAN1` | `SIEM-SPLUNK01` | Splunk Universal Forwarder | TCP 9997 | Validated - WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR |
 
 ## Current Progress
 
@@ -69,8 +69,9 @@ Milestone 6 focuses on validating two initial log sources:
 - pfSense remote logging configured to forward to SIEM-SPLUNK01 on UDP 5514.
 - pfSense logs validated in Splunk — 901 events returned, host=10.10.10.1, source=udp:5514, sourcetype=syslog, filterlog entries confirmed.
 - P1-2 telemetry ingestion validation is in progress.
-- Windows Event Log forwarding has not yet been configured.
-- Windows logs have not yet been validated in Splunk.
+- Splunk Universal Forwarder installed on `TEST-WIN10-LAN1`, pointed at `10.10.10.20:9997`.
+- `inputs.conf` manually created with Application, Security, and System channels enabled.
+- Windows Event Log forwarding validated — WinEventLog:Security events confirmed in Splunk, host=DESKTOP-8K5AHHR, 17+ events visible.
 - Sysmon has not been deployed.
 - WEF has not been configured.
 - Wazuh ingestion has not been validated.
@@ -84,9 +85,8 @@ Milestone 6 must prove that Splunk can receive and display logs from the initial
 
 ## Next Actions
 
-1. Configure Windows Event Log forwarding from `TEST-WIN10-LAN1`.
-2. Validate Windows logs in Splunk.
-3. Document source IPs, ports, screenshots, and validation searches.
+1. Complete Milestone 6 documentation — confirm all completion criteria are met and evidence is recorded.
+2. Begin Milestone 7 — collector placement decision and first endpoint prep.
 
 ## Evidence Captured
 
@@ -96,6 +96,8 @@ Milestone 6 must prove that Splunk can receive and display logs from the initial
 - `screenshots/milestone06-splunk-udp5514-input-configured.png`
 - `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
 - `screenshots/milestone06-splunk-pfsense-events-visible.png` — pfSense validation, 901 events
+- `screenshots/milestone06-splunk-tcp9997-receiving-enabled.png` — Splunk TCP 9997 receiving port configured and enabled
+- `screenshots/milestone06-splunk-windows-events-visible.png` — Windows Event Log validation, WinEventLog:Security events confirmed from DESKTOP-8K5AHHR
 
 ## Milestone 6 Completion Criteria
 
@@ -111,4 +113,4 @@ Milestone 6 is complete only when:
 
 P1-2 is in Milestone 6.
 
-The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is configured to listen for pfSense syslog on UDP `5514`. pfSense remote logging is now active and validated — 901 events were confirmed in Splunk with host=10.10.10.1, source=udp:5514, sourcetype=syslog, and filterlog entries visible. The next step is Windows Event Log forwarding from `TEST-WIN10-LAN1`.
+The lab foundation exists from P1-1, and Splunk is available as the initial telemetry destination. Splunk is configured to listen for pfSense syslog on UDP `5514`. pfSense remote logging is validated — 901+ events confirmed in Splunk with host=10.10.10.1, source=udp:5514. Windows Event Log forwarding is also validated — WinEventLog:Security events confirmed from DESKTOP-8K5AHHR via Splunk Universal Forwarder on TCP 9997. Both Milestone 6 log sources are validated. Milestone 6 completion documentation is the next step.
