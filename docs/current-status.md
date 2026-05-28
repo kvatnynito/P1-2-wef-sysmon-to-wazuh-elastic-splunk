@@ -20,7 +20,7 @@ This project begins after completion of `P1-1-proxmox-segmentation-lab`, which e
 
 P1-2 focuses on telemetry collection, forwarding, validation, and investigation readiness.
 
-Splunk was installed and its Web UI was validated during P1-1, but telemetry ingestion has not yet been tested in this repo.
+Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense syslog ingestion has now been validated, and Windows Event Log ingestion is still planned.
 
 ## Current Milestone
 
@@ -93,7 +93,9 @@ Milestone 6 must prove that Splunk can receive and display logs from the initial
 - `screenshots/milestone06-siem-splunk01-ip-confirmed.png`
 - `screenshots/milestone06-splunk-service-running.png`
 - `screenshots/milestone06-splunk-web-ui-reachable-from-win10.png`
-- `screenshots/milestone06/step05-splunk-pfsense-events-visible.png` (private runbook — pfSense validation, 901 events)
+- `screenshots/milestone06-splunk-udp5514-input-configured.png`
+- `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
+- `screenshots/milestone06-splunk-pfsense-events-visible.png` — pfSense validation, 901 events
 
 ## Milestone 6 Completion Criteria
 

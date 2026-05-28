@@ -22,6 +22,8 @@ This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-
 
 P1-1 established the segmented Proxmox lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
 
+Milestone 6 progress so far: Splunk is running, Splunk Web is reachable from `TEST-WIN10-LAN1`, and pfSense syslog forwarding to Splunk has been validated on UDP `5514`. Windows Event Log forwarding from `TEST-WIN10-LAN1` is still planned.
+
 ---
 
 ## Sanitization Note
@@ -141,14 +143,14 @@ This repo is expected to eventually include:
 
 The current implementation focus is Milestone 6:
 
-- confirm Splunk is installed and running on `SIEM-SPLUNK01`
-- confirm Splunk Web UI is reachable
-- configure Splunk to receive pfSense syslog
-- configure pfSense to forward logs to `SIEM-SPLUNK01`
-- validate pfSense logs in Splunk
-- configure Windows Event Log forwarding from `TEST-WIN10-LAN1`
-- validate Windows logs in Splunk
-- document source IPs, ports, screenshots, and validation searches
+- completed: confirmed Splunk is installed and running on `SIEM-SPLUNK01`
+- completed: confirmed Splunk Web UI is reachable from `TEST-WIN10-LAN1`
+- completed: configured Splunk to receive pfSense syslog on UDP `5514`
+- completed: configured pfSense to forward logs to `SIEM-SPLUNK01`
+- completed: validated pfSense logs in Splunk
+- next: configure Windows Event Log forwarding from `TEST-WIN10-LAN1`
+- next: validate Windows logs in Splunk
+- next: document remaining source IPs, ports, screenshots, and validation searches
 
 ---
 

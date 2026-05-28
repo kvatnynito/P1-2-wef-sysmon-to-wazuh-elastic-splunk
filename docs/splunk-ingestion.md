@@ -1,18 +1,19 @@
 # Splunk Free Ingestion
-Status: Draft (to be updated during implementation)
+Status: Milestone 6 in progress
 
 ## Goals
-- Ingest Windows + Sysmon events into Splunk Free
-- Validate SPL searches for common investigations
+- Ingest pfSense syslog into Splunk Free
+- Ingest Windows Event Logs into Splunk Free
+- Validate SPL searches that prove log flow before detection work begins
 
 ## Implementation notes to add
-- Ingestion method (Universal Forwarder on collector vs endpoint)
-- Inputs configuration approach (sanitized)
-- Index + sourcetype choices
+- Windows ingestion method and forwarder settings
+- Windows index and sourcetype choices
+- Notes on troubleshooting if Windows forwarding fails
 
 ## Milestone 6 pfSense Syslog Input
 
-Status: Configured, not yet validated
+Status: Validated
 
 | Setting | Value |
 |---|---|
@@ -25,9 +26,32 @@ Status: Configured, not yet validated
 | Host method | IP address of the remote sender |
 | Index | `default` / `main` |
 
-This input prepares Splunk to receive pfSense syslog. It does not prove log flow until pfSense is configured to forward logs and a Splunk search returns pfSense events.
+This input receives pfSense syslog from `FW-EDGE01`. Log flow was validated after pfSense remote logging was configured to send to `10.10.10.20:5514`.
+
+## Milestone 6 pfSense Validation
+
+Validation search:
+
+```spl
+index=main sourcetype=syslog
+```
+
+Validation result:
+
+- 901 events returned in Splunk.
+- `host=10.10.10.1`
+- `source=udp:5514`
+- `sourcetype=syslog`
+- `filterlog` entries visible.
+
+Evidence:
+
+- `screenshots/milestone06-splunk-udp5514-input-configured.png`
+- `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
+- `screenshots/milestone06-splunk-pfsense-events-visible.png`
 
 ## Evidence to add
-- Screenshot: Data arriving (Search head)
-- 2–3 core SPL queries used for validation
-- Notes on troubleshooting (if any)
+
+- Windows Event Log forwarding validation search.
+- Windows Event Log events visible in Splunk.
+- Notes on troubleshooting if any.
