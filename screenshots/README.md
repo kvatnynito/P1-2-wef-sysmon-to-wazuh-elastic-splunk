@@ -93,3 +93,19 @@ Server Manager Local Server view showing `WEC01` with domain `corp.local` and Et
 ![WEC01 PowerShell validation for domain controller discovery and network settings](milestone07-wec01-domain-dc-network-validation.png)
 
 PowerShell output showing `nltest /dsgetdc:corp.local` locating `AD-DC01.corp.local` at `10.10.10.10`, with successful command completion. `ipconfig /all` confirms host name `WEC01`, primary DNS suffix `corp.local`, static IPv4 address `10.10.10.30`, default gateway `10.10.10.1`, and DNS server `10.10.10.10`.
+
+### TEST-WIN10-LAN1 Endpoint Readiness
+
+**TEST-WIN10-LAN1 domain and DNS readiness validated**
+
+![TEST-WIN10-LAN1 domain login, domain membership, DHCP, DNS, and corp.local resolution validated](milestone07-test-win10-lan1-domain-dns-validated.png)
+
+PowerShell output from `TEST-WIN10-LAN1` showing `whoami` as `corp\administrator`, `systeminfo` showing domain `corp.local`, `ipconfig /all` showing `AD-DC01` (`10.10.10.10`) as DNS, and `nslookup corp.local` resolving through `10.10.10.10`. Confirms the first Windows endpoint is domain-joined and using Active Directory DNS.
+
+---
+
+**TEST-WIN10-LAN1 WinRM reachability to WEC01 validated**
+
+![TEST-WIN10-LAN1 can reach WEC01 on WinRM TCP 5985](milestone07-test-win10-lan1-wec01-winrm-5985-reachable.png)
+
+PowerShell `Test-NetConnection WEC01.corp.local -Port 5985` showing `TcpTestSucceeded : True`. Confirms the endpoint can reach the selected WEF collector on the WinRM transport path used by future WEF configuration. ICMP ping to `WEC01` is blocked or unvalidated, but the WEF-relevant TCP path is reachable.

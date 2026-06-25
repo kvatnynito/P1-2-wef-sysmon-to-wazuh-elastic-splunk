@@ -25,11 +25,12 @@ This file shows the intended project roadmap for P1-2 only. For the current live
 
 ## Current Milestone
 
-- Milestone 7 — Collector Placement and First Endpoint Prep
+- Milestone 8 — Sysmon Deployment and Local Validation
 
 ## Completed Milestones
 
 - Milestone 6 — Logging Foundation
+- Milestone 7 — Collector Placement and First Endpoint Prep
 
 ## Transition Note
 
@@ -185,7 +186,11 @@ Decide collector placement and prepare the first Windows endpoint for the next t
 
 ### Status
 
-Planned.
+Complete.
+
+Collector placement is decided: a dedicated `WEC01` collector has been selected instead of placing the WEF collector role on `AD-DC01`. `WEC01` has been provisioned, assigned static IP `10.10.10.30`, joined to `corp.local`, and validated for domain controller discovery against `AD-DC01` at `10.10.10.10`.
+
+`TEST-WIN10-LAN1` endpoint readiness is validated. The endpoint is joined to `corp.local`, receives `AD-DC01` (`10.10.10.10`) as DNS through pfSense DHCP, resolves `corp.local`, resolves `WEC01.corp.local` to `10.10.10.30`, and reaches `WEC01` on WinRM TCP `5985`. ICMP ping to `WEC01` is blocked or unvalidated, but the WEF-relevant WinRM path is reachable.
 
 ---
 
@@ -220,7 +225,9 @@ Milestone 8 is complete only when:
 
 ### Status
 
-Planned.
+Active - not started.
+
+Milestone 8 should start with local Sysmon deployment and Event Viewer validation on `TEST-WIN10-LAN1`. Do not configure WEF subscriptions until local Sysmon event generation is validated.
 
 ---
 
