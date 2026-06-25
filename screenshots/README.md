@@ -73,3 +73,23 @@ Splunk "Receive data" page showing port 9997 with status Enabled. Required for t
 ![Splunk search returning Windows Security events from TEST-WIN10-LAN1](milestone06-splunk-windows-events-visible.png)
 
 Splunk search `index=* sourcetype=WinEventLog*` returning 17 events. `host=DESKTOP-8K5AHHR`, `sourcetype=WinEventLog:Security` (sourcetype — a label Splunk uses to identify what kind of log data came in, so it knows how to parse it). Validates end-to-end Windows Event Log ingestion via Splunk Universal Forwarder.
+
+---
+
+## Milestone 7 — Collector Placement and First Endpoint Prep
+
+### WEC01 Collector Domain Join
+
+**WEC01 joined to corp.local**
+
+![WEC01 Server Manager showing corp.local domain membership](milestone07-wec01-domain-membership-confirmed.png)
+
+Server Manager Local Server view showing `WEC01` with domain `corp.local` and Ethernet address `10.10.10.30`. Confirms the dedicated Windows Event Collector candidate is no longer in a workgroup and is joined to the Active Directory domain.
+
+---
+
+**WEC01 domain controller discovery and network settings validated**
+
+![WEC01 PowerShell validation for domain controller discovery and network settings](milestone07-wec01-domain-dc-network-validation.png)
+
+PowerShell output showing `nltest /dsgetdc:corp.local` locating `AD-DC01.corp.local` at `10.10.10.10`, with successful command completion. `ipconfig /all` confirms host name `WEC01`, primary DNS suffix `corp.local`, static IPv4 address `10.10.10.30`, default gateway `10.10.10.1`, and DNS server `10.10.10.10`.

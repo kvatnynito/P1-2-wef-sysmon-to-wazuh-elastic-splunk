@@ -77,7 +77,10 @@ Milestone 7 focuses on:
 - `WEC01` VM provisioned in Proxmox (VMID 107, Windows Server 2022, LAN1, static IP 10.10.10.30).
 - `WEC01` computer name set, static IP assigned (10.10.10.30), DNS pointed at AD-DC01 (10.10.10.10).
 - `AD-DC01` promoted to domain controller — `corp.local` domain created (forest and domain functional level: Windows Server 2016, DNS on AD-DC01).
-- `WEC01` domain join not yet complete — accidentally joined workgroup instead of domain; fix in progress.
+- `WEC01` successfully joined to the `corp.local` domain.
+- `WEC01` domain membership confirmed in Server Manager: computer name `WEC01`, domain `corp.local`, Ethernet `10.10.10.30`.
+- `WEC01` domain controller discovery validated with `nltest /dsgetdc:corp.local`; `AD-DC01.corp.local` resolved at `10.10.10.10`.
+- `WEC01` network configuration validated: static IPv4 `10.10.10.30`, gateway `10.10.10.1`, DNS server `10.10.10.10`, primary DNS suffix `corp.local`.
 - Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) has not been deployed.
 - WEF has not been configured.
 - Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring) ingestion has not been validated.
@@ -89,10 +92,10 @@ Do not begin Sysmon deployment or WEF configuration until the collector placemen
 
 ## Next Actions
 
-1. On `WEC01`: System Properties → Change → select Domain radio button → type `corp.local` → enter domain admin credentials → reboot.
-2. Confirm `WEC01` Local Server shows domain: `corp.local`.
-3. Confirm `TEST-WIN10-LAN1` endpoint readiness for WEF and Sysmon onboarding.
-4. Document Milestone 7 progress in public repo.
+1. Power on `TEST-WIN10-LAN1`.
+2. Confirm `TEST-WIN10-LAN1` network configuration, DNS, hostname, and domain/workgroup membership.
+3. Confirm `TEST-WIN10-LAN1` can reach `AD-DC01` and resolve `corp.local`.
+4. Document first endpoint readiness for WEF and Sysmon onboarding.
 
 ## Evidence Captured
 
@@ -104,6 +107,8 @@ Do not begin Sysmon deployment or WEF configuration until the collector placemen
 - `screenshots/milestone06-splunk-pfsense-events-visible.png` — pfSense validation, 901 events
 - `screenshots/milestone06-splunk-tcp9997-receiving-enabled.png` — Splunk TCP 9997 receiving port configured and enabled
 - `screenshots/milestone06-splunk-windows-events-visible.png` — Windows Event Log validation, WinEventLog:Security events confirmed from DESKTOP-8K5AHHR
+- `screenshots/milestone07-wec01-domain-membership-confirmed.png` — WEC01 Server Manager showing domain `corp.local` and Ethernet `10.10.10.30`
+- `screenshots/milestone07-wec01-domain-dc-network-validation.png` — WEC01 PowerShell validation showing `nltest /dsgetdc:corp.local`, static IP `10.10.10.30`, DNS `10.10.10.10`, and primary DNS suffix `corp.local`
 
 ## Milestone 6 Completion Criteria
 
@@ -119,4 +124,4 @@ Milestone 6 is complete only when:
 
 P1-2 is in Milestone 7 — Collector Placement and First Endpoint Prep.
 
-Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. In Milestone 7, the collector placement decision has been made: a dedicated `WEC01` VM was provisioned (VMID 107, Windows Server 2022, 10.10.10.30) to keep the collector role separate from `AD-DC01`, matching production SOC practice. `AD-DC01` has been promoted to domain controller and the `corp.local` domain created. `WEC01` has its computer name and static IP configured but is not yet domain-joined — the machine was accidentally added to a workgroup named CORP.LOCAL instead of the corp.local domain. The next step is to reopen System Properties on `WEC01`, select the Domain radio button, enter `corp.local`, and complete the domain join.
+Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. In Milestone 7, the collector placement decision has been made: a dedicated `WEC01` VM was provisioned (VMID 107, Windows Server 2022, 10.10.10.30) to keep the collector role separate from `AD-DC01`, matching production SOC practice. `AD-DC01` has been promoted to domain controller and the `corp.local` domain created. `WEC01` is now correctly joined to the `corp.local` domain, using `AD-DC01` at `10.10.10.10` for domain controller discovery and DNS. The next step is to confirm `TEST-WIN10-LAN1` endpoint readiness for WEF and Sysmon onboarding.
