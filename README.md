@@ -22,7 +22,7 @@ This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-
 
 P1-1 established the segmented Proxmox (an open-source virtualization platform used to run multiple virtual machines on one physical host) lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on proving that pfSense and Windows logs can flow into Splunk before moving into collector placement, Sysmon, WEF, Wazuh, or Elastic work.
 
-Milestone 6 is complete. pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) forwarding validated on UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) on TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 begins next: collector placement decision and first endpoint prep.
+Milestone 6 is complete. pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) forwarding validated on UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) on TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 is in progress: dedicated collector placement has been selected, `WEC01` has been joined to `corp.local`, and first endpoint readiness remains next.
 
 ---
 
@@ -141,16 +141,14 @@ This repo is expected to eventually include:
 
 ## Planned Next Steps
 
-The current implementation focus is Milestone 6:
+The current implementation focus is Milestone 7:
 
-- completed: confirmed Splunk is installed and running on `SIEM-SPLUNK01`
-- completed: confirmed Splunk Web UI is reachable from `TEST-WIN10-LAN1`
-- completed: configured Splunk to receive pfSense syslog on UDP `5514`
-- completed: configured pfSense to forward logs to `SIEM-SPLUNK01`
-- completed: validated pfSense logs in Splunk
-- next: configure Windows Event Log forwarding from `TEST-WIN10-LAN1`
-- next: validate Windows logs in Splunk
-- next: document remaining source IPs, ports, screenshots, and validation searches
+- completed: selected a dedicated `WEC01` collector instead of placing WEF collector duties on `AD-DC01`
+- completed: provisioned `WEC01` on LAN1 with static IP `10.10.10.30`
+- completed: joined `WEC01` to the `corp.local` domain
+- next: confirm `TEST-WIN10-LAN1` network, DNS, hostname, and domain/workgroup state
+- next: document first endpoint readiness for WEF and Sysmon onboarding
+- next: begin Sysmon deployment only after Milestone 7 prep is complete
 
 ---
 
@@ -162,7 +160,7 @@ This project is planned to be implemented on the segmented lab documented in:
 
 Planned hosts used during implementation:
 
-- **Collector:** TBD (`AD-DC01` vs dedicated `WEC01`)
+- **Collector:** dedicated `WEC01`
 - **Endpoints:** `AD-WIN10` / `AD-WIN11`
 - **Supporting hosts as needed:** `LAN1-FILE01`, `VULN-DVWA01`, `TEST-WIN2019-LAN2`, `SCAN-OPENVAS01`
 - **Destinations:** Wazuh / Elastic / Splunk (SIEM — Security Information and Event Management — platforms that collect, store, and search log data from many sources)
