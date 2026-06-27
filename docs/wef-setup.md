@@ -5,6 +5,8 @@ Status: Collector selected; WEF implementation not started
 - Configure a source-initiated subscription (a WEF configuration that tells the collector which endpoints to pull logs from and which events to collect)
 - Forward Security + Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) logs from endpoints to the collector (a Windows machine that receives forwarded logs from multiple endpoints)
 
+WEF configuration is intentionally blocked until Milestone 8 proves local Sysmon event generation on `TEST-WIN10-LAN1`.
+
 ## Collector Placement
 
 The selected WEF collector is a dedicated Windows Server VM named `WEC01`.
