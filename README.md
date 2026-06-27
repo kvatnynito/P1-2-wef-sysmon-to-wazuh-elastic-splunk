@@ -22,7 +22,7 @@ This project is part of Portfolio 1 and begins after `P1-1-proxmox-segmentation-
 
 P1-1 established the segmented Proxmox (an open-source virtualization platform used to run multiple virtual machines on one physical host) lab foundation and validated that Splunk Web UI is reachable. P1-2 is now focused on expanding from validated Splunk ingestion into endpoint telemetry with Sysmon, WEF, Wazuh, and Elastic.
 
-Milestones 6 and 7 are complete. pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) forwarding validated on UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) on TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 selected a dedicated `WEC01` collector, joined `WEC01` to `corp.local`, and confirmed `TEST-WIN10-LAN1` is domain-joined, using AD DNS, and able to reach `WEC01` on WinRM TCP `5985`. Milestone 8 is next: deploy Sysmon and validate local event generation.
+Milestones 6 and 7 are complete. pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) forwarding validated on UDP (User Datagram Protocol — a fast, connectionless way to send data over a network, common for log delivery) `5514` (901+ events, host=10.10.10.1) and Windows Event Log forwarding validated via Splunk Universal Forwarder (a lightweight agent installed on an endpoint that ships its logs to a central SIEM) on TCP (Transmission Control Protocol — a reliable, connection-based way to send data that confirms delivery) `9997` (WinEventLog:Security confirmed, host=DESKTOP-8K5AHHR). Milestone 7 selected a dedicated `WEC01` collector, joined `WEC01` to `corp.local`, and confirmed `TEST-WIN10-LAN1` is domain-joined, using AD DNS, and able to reach `WEC01` on WinRM TCP `5985`. Milestone 8 is active: deploy Sysmon on `TEST-WIN10-LAN1` and validate local event generation before configuring WEF.
 
 ---
 
@@ -149,7 +149,7 @@ The current implementation focus is Milestone 8:
 - completed: joined `TEST-WIN10-LAN1` to `corp.local`
 - completed: confirmed `TEST-WIN10-LAN1` uses `AD-DC01` for domain DNS and resolves `corp.local`
 - completed: confirmed `TEST-WIN10-LAN1` reaches `WEC01` on WinRM TCP `5985`
-- next: deploy Sysmon to the first Windows endpoint and validate local Sysmon events before configuring WEF
+- next: stage Sysmon and the selected configuration, install Sysmon on `TEST-WIN10-LAN1`, generate local test activity, and validate Sysmon events in Event Viewer before configuring WEF
 
 ---
 
@@ -178,9 +178,10 @@ Planned hosts used during implementation:
 ## Architecture (High Level)
 
 ### Flow (Planned)
-Endpoints (domain-joined Windows)  
-→ **WEF Collector** (TBD: `AD-DC01` vs dedicated collector)  
-→ **Wazuh / Elastic / Splunk**
+Endpoints (domain-joined Windows) → **Dedicated WEF Collector** (`WEC01`) → **Wazuh / Elastic / Splunk**
+
+### Current Milestone 8 Validation Flow
+`TEST-WIN10-LAN1` → local **Sysmon Operational** event log → Event Viewer validation before WEF is configured
 
 ---
 

@@ -42,12 +42,15 @@ Milestone 8 focuses on:
 - Generating basic local endpoint activity
 - Confirming Sysmon events are visible locally before WEF forwarding is configured
 
+Milestone 8 is active but not validated. No WEF subscription work should begin until a local Sysmon event is visible on `TEST-WIN10-LAN1` and documented as evidence.
+
 ## Current Lab Systems Available from P1-1
 
 | System | Role | Status |
 |---|---|---|
 | `FW-EDGE01` | pfSense firewall/router | Available from P1-1 |
-| `AD-DC01` | Domain Controller / possible collector candidate | Available from P1-1 |
+| `AD-DC01` | Domain Controller / DNS | Available from P1-1 |
+| `WEC01` | Dedicated Windows Event Collector | Added during P1-2 |
 | `TEST-WIN10-LAN1` | First Windows endpoint / future AD-WIN10 | Available from P1-1 |
 | `TEST-WIN10-LAN2` | LAN2 Windows endpoint | Available from P1-1 |
 | `ATTACK-KALI01` | Kali traffic generator | Available from P1-1 |
@@ -88,7 +91,7 @@ Milestone 8 focuses on:
 - `TEST-WIN10-LAN1` DNS readiness validated: primary DNS suffix `corp.local`, DNS server `10.10.10.10`, and `nslookup corp.local` resolving through `AD-DC01`.
 - `TEST-WIN10-LAN1` collector reachability validated by resolving `WEC01.corp.local` to `10.10.10.30` and confirming WinRM TCP `5985` to `WEC01` succeeds. ICMP ping to `WEC01` is blocked or unvalidated, but the WEF-relevant WinRM path is reachable.
 - Splunk continuity checked after the domain join: `Splunkd.service` is active on `SIEM-SPLUNK01`, and `SplunkForwarder` remains Running / Automatic on `TEST-WIN10-LAN1`.
-- Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) has not been deployed.
+- Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) has not been deployed or locally validated yet.
 - WEF has not been configured.
 - Wazuh (an open-source security platform that collects agent data, generates alerts, and supports endpoint monitoring) ingestion has not been validated.
 - Elastic (the Elasticsearch and Kibana stack — a search and visualization platform used to store and query log data) ingestion has not been validated.
@@ -132,6 +135,6 @@ Milestone 6 is complete only when:
 
 ## Current Status Summary
 
-P1-2 is entering Milestone 8 — Sysmon Deployment and Local Validation.
+P1-2 is in Milestone 8 — Sysmon Deployment and Local Validation.
 
 Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. Milestone 7 is complete. The collector placement decision has been made: a dedicated `WEC01` VM was provisioned (VMID 107, Windows Server 2022, 10.10.10.30) to keep the collector role separate from `AD-DC01`, matching production SOC practice. `AD-DC01` has been promoted to domain controller and the `corp.local` domain created. `WEC01` is joined to `corp.local`, and `TEST-WIN10-LAN1` is now domain-joined, using `AD-DC01` for domain DNS, able to resolve `WEC01.corp.local`, and able to reach `WEC01` on WinRM TCP `5985`. The next step is Milestone 8: deploy Sysmon and validate local Sysmon events on `TEST-WIN10-LAN1`.

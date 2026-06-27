@@ -225,9 +225,17 @@ Milestone 8 is complete only when:
 
 ### Status
 
-Active - not started.
+Active - planned / not validated.
 
 Milestone 8 should start with local Sysmon deployment and Event Viewer validation on `TEST-WIN10-LAN1`. Do not configure WEF subscriptions until local Sysmon event generation is validated.
+
+### Planned Validation Flow
+
+| Source | Destination | Validation Point | Status |
+|---|---|---|---|
+| `TEST-WIN10-LAN1` | Local Event Viewer | `Microsoft-Windows-Sysmon/Operational` events visible | Planned |
+
+Milestone 8 should produce one sanitized public screenshot only after local Sysmon event generation is proven. Full install steps and intermediate screenshots remain in the private runbook.
 
 ---
 
@@ -588,7 +596,8 @@ This repo should stay focused on making telemetry usable, searchable, and valida
 | VM Name | Role |
 |---|---|
 | `FW-EDGE01` | pfSense firewall/router |
-| `AD-DC01` | Domain Controller / possible collector candidate |
+| `AD-DC01` | Domain Controller / DNS |
+| `WEC01` | Dedicated Windows Event Collector |
 | `TEST-WIN10-LAN1` | First Windows endpoint / future AD-WIN10 |
 | `TEST-WIN10-LAN2` | LAN2 Windows endpoint |
 | `ATTACK-KALI01` | Kali traffic generator |
