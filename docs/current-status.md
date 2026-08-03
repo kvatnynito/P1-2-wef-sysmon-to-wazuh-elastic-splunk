@@ -132,6 +132,4 @@ Milestone 6 is complete only when:
 
 ## Current Status Summary
 
-P1-2 is entering Milestone 8 — Sysmon Deployment and Local Validation.
-
-Milestone 6 is complete. pfSense syslog (901+ events, host=10.10.10.1, UDP 5514) and Windows Event Log forwarding (WinEventLog:Security, host=DESKTOP-8K5AHHR, TCP 9997) are both validated in Splunk. Milestone 7 is complete. The collector placement decision has been made: a dedicated `WEC01` VM was provisioned (VMID 107, Windows Server 2022, 10.10.10.30) to keep the collector role separate from `AD-DC01`, matching production SOC practice. `AD-DC01` has been promoted to domain controller and the `corp.local` domain created. `WEC01` is joined to `corp.local`, and `TEST-WIN10-LAN1` is now domain-joined, using `AD-DC01` for domain DNS, able to resolve `WEC01.corp.local`, and able to reach `WEC01` on WinRM TCP `5985`. The next step is Milestone 8: deploy Sysmon and validate local Sysmon events on `TEST-WIN10-LAN1`.
+Milestones 6 and 7 are complete (see Current Progress above for the full evidence trail). P1-2 is entering Milestone 8 — Sysmon Deployment and Local Validation on `TEST-WIN10-LAN1`.
