@@ -1,6 +1,10 @@
 # Sysmon Configuration
 Status: Step 8 complete — validated
 
+## Credit
+
+The Sysmon configuration used in this project is not custom-written — it's the community-standard baseline from **[SwiftOnSecurity/sysmon-config](https://github.com/SwiftOnSecurity/sysmon-config)** (source version 74, licensed CC BY 4.0). It was chosen deliberately over writing filtering rules from scratch: it's a well-known, field-tested template that real SOC teams use as a starting baseline, tuned over years to balance detection coverage against noise, rather than reinventing detection logic from zero.
+
 ## Goals
 - Install Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections) on endpoints
 - Use a tuned config to capture high-value events
