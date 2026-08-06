@@ -305,7 +305,7 @@ Step 10 is complete only when:
 
 ### Status
 
-Planned.
+Active — Splunk portion complete. A Universal Forwarder installed on `WEC01` ships its Forwarded Events log to `SIEM-SPLUNK01`. Along the way: fixed an expired 60-day Enterprise Trial license (switched to Splunk Free), validated with a live end-to-end test (`whoami` run on `TEST-WIN10-LAN1`, located in Splunk within minutes), then expanded the architecture so all four Windows Event Log channels (Security, Sysmon, Application, System) flow exclusively through `WEC01` — hit the same "file name is too long" bookmark-path bug from Step 9 a second time when adding channels to the existing subscription, fixed by creating a second, short-named subscription instead. `TEST-WIN10-LAN1`'s own direct Splunk forwarder has since been fully uninstalled. Wazuh and Elastic ingestion remain not started — neither has a VM built yet.
 
 ---
 

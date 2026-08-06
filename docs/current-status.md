@@ -24,7 +24,7 @@ Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense 
 
 ## Current Step
 
-**Active step:** Step 9 — WEF Configuration and Collector Validation (complete)
+**Active step:** Step 10 — Multi-Platform Ingestion Validation (Splunk portion complete; Wazuh and Elastic not yet started — neither has a VM built yet)
 
 ## Completed P1-2 Steps
 
@@ -35,7 +35,7 @@ Splunk was installed and its Web UI was validated during P1-1. In P1-2, pfSense 
 
 ## Current Objective
 
-Steps 6, 7, 8, and 9 are complete. Collector placement has been decided: a dedicated `WEC01` collector is in use. `TEST-WIN10-LAN1` has been joined to `corp.local`, confirmed ready for WEF and Sysmon onboarding, and Sysmon has been deployed with the SwiftOnSecurity config and validated locally. WEF is now fully configured and validated: `WEC01` is receiving Security and Sysmon events from `TEST-WIN10-LAN1` in real time. The next objective is Step 10: validating telemetry ingestion into Wazuh, Elastic, and Splunk.
+Steps 6, 7, 8, and 9 are complete. Collector placement has been decided: a dedicated `WEC01` collector is in use. `TEST-WIN10-LAN1` has been joined to `corp.local`, confirmed ready for WEF and Sysmon onboarding, and Sysmon has been deployed with the SwiftOnSecurity config and validated locally. WEF is fully configured and validated: `WEC01` receives Security and Sysmon events from `TEST-WIN10-LAN1` in real time. Step 10 is now in progress: the Splunk half is done — a Universal Forwarder was installed on `WEC01` shipping its Forwarded Events log to `SIEM-SPLUNK01`, confirmed searchable (42 events for `host=WEC01`). Wazuh and Elastic still need their own VMs built from scratch before their ingestion can be validated — deliberately scoped as separate future sessions.
 
 Step 8 covered:
 
@@ -54,6 +54,14 @@ Step 9 covered:
 - Validating forwarding end-to-end: 1,128 events confirmed in `WEC01`'s Forwarded Events log, sourced from `TEST-WIN10-LAN1.corp.local`
 
 Step 9 is complete and validated. Step 10 (Wazuh/Elastic/Splunk ingestion validation) is next.
+
+Step 10 so far (Splunk portion):
+
+- Installed the Splunk Universal Forwarder on `WEC01`, configured to monitor its local `Forwarded Events` log (the log WEF writes Security + Sysmon events into) and ship it to `SIEM-SPLUNK01` on TCP `9997` — the same receiving port `TEST-WIN10-LAN1`'s forwarder already used successfully since Step 6
+- Hit and fixed a real infrastructure issue unrelated to the forwarder itself: `SIEM-SPLUNK01`'s 60-day Enterprise Trial license (installed during P1-1, 2026-05-13) had expired, blocking all searches with a license-limit error. Fixed by switching the license group to the free Splunk license (500MB/day, sufficient for this lab) via Settings → Licensing, then restarting the Splunk service
+- Validated ingestion end-to-end: search `host="WEC01"` returned 42 events in the last 15 minutes, sourcetype `WinEventLog:ForwardedEvents`, including real Sysmon Process Create events originating from `TEST-WIN10-LAN1.corp.local` — full pipeline (`TEST-WIN10-LAN1` → `WEC01` → `SIEM-SPLUNK01`) confirmed searchable in Splunk
+
+Wazuh and Elastic ingestion remain not started — neither has a VM built yet, deliberately scoped as separate future work rather than rushed in this same session.
 
 **Naming note:** `TEST-WIN10-LAN1` was renamed at the Windows/AD level partway through Step 9 — it was previously `DESKTOP-8K5AHHR` (an auto-generated name that was never changed at OS install time). All Step 6-8 evidence and the earlier part of Step 9 was captured under the old name; same machine throughout.
 
@@ -148,6 +156,12 @@ Do not begin WEF configuration until Sysmon has been deployed and validated loca
 - `screenshots/step09-subscription-runtime-status-active.png` — Subscription Runtime Status on WEC01: "Active - : No additional status" for both the subscription and source computer `DESKTOP-8K5AHHR.corp.local` (1 Total, 1 Active) — confirms the WinRM connection from the endpoint to the collector succeeded
 - `screenshots/step09-hostname-renamed-test-win10-lan1.png` — `hostname` on the endpoint now returns `TEST-WIN10-LAN1` (renamed from the auto-generated `DESKTOP-8K5AHHR`, matching the Proxmox VM label); `whoami` confirms domain trust survived the rename and reboot (`corp\administrator`). **Note for continuity:** all Step 6-8 evidence and the early Step 9 troubleshooting above were captured while this machine was still named `DESKTOP-8K5AHHR` — same machine throughout, name changed partway through Step 9
 - `screenshots/step09-forwarded-events-1128-confirmed.png` — `WEC01` Forwarded Events log showing 1,128 events from `TEST-WIN10-LAN1.corp.local` after recreating the subscription against the renamed host; selected Event ID 13 (Registry value set, Sysmon rule `Suspicious.ImageBeginWithBackslash`) confirms real Sysmon telemetry is flowing end-to-end — Step 9 complete
+- `screenshots/step10-splunk-host-wec01-42-events.png` — Splunk search `host="WEC01"`, last 15 minutes, returning 42 events sourcetype `WinEventLog:ForwardedEvents`; top event is a real Sysmon Process Create (EventCode=1) originally from `TEST-WIN10-LAN1.corp.local` — confirms the full `TEST-WIN10-LAN1` → `WEC01` → `SIEM-SPLUNK01` pipeline is searchable in Splunk
+- `screenshots/step10-splunk-live-test-whoami-confirmed.png` — Deliberate live end-to-end test: ran `whoami` on `TEST-WIN10-LAN1`, located it in Splunk via `host="WEC01" CommandLine=whoami`, confirmed `Image=C:\Windows\System32\whoami.exe` from `TEST-WIN10-LAN1.corp.local` — proves the full pipeline in near-real time, not just historical backlog. Also surfaced and diagnosed a real display-only issue along the way: Splunk's Time column showed timestamps ~7 hours ahead of local time because the forwarding host (`WEC01`) has its system clock set to UTC rather than Arizona time — confirmed harmless (the raw Windows event and Sysmon's own `UtcTime` field were both internally consistent) by comparing against Sysmon's embedded `UtcTime` field
+- `screenshots/step10-duplicate-security-forwarding-removed.png` — `net stop`/`net start SplunkForwarder` on `TEST-WIN10-LAN1` after editing its `inputs.conf` to set `disabled = 1` under `[WinEventLog://Security]` only (Application and System left untouched); removes duplicate Security log ingestion now that Security data also arrives via the `WEC01`/WEF pipeline
+- **Full architecture cleanup:** rather than leave a hybrid setup (Security+Sysmon via `WEC01`, Application+System via `TEST-WIN10-LAN1`'s own direct forwarder), completed the cutover so `TEST-WIN10-LAN1` needs no direct Splunk forwarder at all — all four channels now flow exclusively through `WEC01`. Set all three stanzas (`Application`, `Security`, `System`) to `disabled = 1` in `TEST-WIN10-LAN1`'s `inputs.conf`. Attempted to add Application + System to the existing `TEST-WIN10-Security-Sysmon` subscription's query, which re-triggered the same "file name is too long" bookmark-path issue from Step 9 (confirmed via `WEC01`'s local Forwarded Events log, Event 111, `Microsoft-Windows-EventForwarder`) — now that the subscription tracked 4 channels instead of 2, the already-shortened name wasn't short enough. Fixed by creating a **second, separate subscription** (short name, Application + System only, picked via the standard checkbox tree since — unlike Sysmon — these are logs `WEC01` already knows about locally) rather than risking the already-working first subscription. Once both subscriptions were confirmed delivering real data, fully uninstalled the Splunk Universal Forwarder from `TEST-WIN10-LAN1` (Apps & Features) — the endpoint now runs no third-party forwarding software at all; every log channel reaches Splunk exclusively through `WEC01`.
+- `screenshots/step10-application-log-via-wec01-confirmed.png` — Splunk search `host=wec01 LogName=Application`, all time, 5 events including the original test entry (`EventCode=9999`) — confirms the second subscription is delivering Application events
+- `screenshots/step10-system-log-via-wec01-confirmed.png` — Splunk search `host=wec01 LogName=System`, all time, 7 events including a real Group Policy processing event (`EventCode=1501`) — confirms System is flowing too. **All four channels (Security, Sysmon, Application, System) now flow exclusively through `WEC01` via two subscriptions; `TEST-WIN10-LAN1` no longer sends anything to Splunk directly.**
 
 ## Step 6 Completion Criteria
 
