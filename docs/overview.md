@@ -1,5 +1,5 @@
 # Project Overview
-Status: Active - Milestone 8 in progress
+Status: Active - Step 8 in progress
 
 ## What this project builds
 - Centralized Windows telemetry (the stream of log and event data collected from systems to support monitoring and investigation) pipeline using WEF (Windows Event Forwarding — a built-in Windows feature that pushes event logs from endpoint machines to a central collector) + Sysmon (a free Microsoft tool that records detailed system activity like process launches and network connections)
@@ -13,4 +13,4 @@ Status: Active - Milestone 8 in progress
 
 ## Evidence to add
 - Diagram link
-- Screenshot links for each milestone
+- Screenshot links for each step

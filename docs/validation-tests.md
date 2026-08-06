@@ -1,10 +1,10 @@
 # Validation Tests
-Status: Draft - Milestone 8 local validation planned
+Status: Draft - Step 8 local validation planned
 
 ## Goal
-Confirm test activity appears at each stage of the pipeline as that stage is built. Milestone 8 starts with local endpoint validation before any collector or downstream platform validation.
+Confirm test activity appears at each stage of the pipeline as that stage is built. Step 8 starts with local endpoint validation before any collector or downstream platform validation.
 
-## Milestone 8 local validation
+## Step 8 local validation
 
 Confirm controlled test activity appears on `TEST-WIN10-LAN1` in:
 - Local Event Viewer

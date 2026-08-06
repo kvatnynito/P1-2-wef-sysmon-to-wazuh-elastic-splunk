@@ -1,5 +1,5 @@
 # Splunk Free Ingestion
-Status: Milestone 6 complete
+Status: Step 6 complete
 
 ## Goals
 - Ingest pfSense (an open-source firewall and router acting as the network gateway in this lab) syslog (a standard format that network devices like firewalls use to send log messages) into Splunk Free
@@ -11,7 +11,7 @@ Status: Milestone 6 complete
 - Windows index and sourcetype choices
 - Notes on troubleshooting if Windows forwarding fails
 
-## Milestone 6 pfSense Syslog Input
+## Step 6 pfSense Syslog Input
 
 Status: Validated
 
@@ -28,7 +28,7 @@ Status: Validated
 
 This input receives pfSense syslog from `FW-EDGE01`. Log flow was validated after pfSense remote logging was configured to send to `10.10.10.20:5514`.
 
-## Milestone 6 pfSense Validation
+## Step 6 pfSense Validation
 
 Validation search:
 
@@ -46,19 +46,19 @@ Validation result:
 
 Evidence:
 
-- `screenshots/milestone06-splunk-udp5514-input-configured.png`
+- `screenshots/step06-splunk-udp5514-input-configured.png`
 
-![Splunk UDP 5514 input created successfully](../screenshots/milestone06-splunk-udp5514-input-configured.png)
+![Splunk UDP 5514 input created successfully](../screenshots/step06-splunk-udp5514-input-configured.png)
 
-- `screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png`
+- `screenshots/step06-pfsense-remote-logging-configured-udp5514.png`
 
-![pfSense remote logging configured to 10.10.10.20:5514](../screenshots/milestone06-pfsense-remote-logging-configured-udp5514.png)
+![pfSense remote logging configured to 10.10.10.20:5514](../screenshots/step06-pfsense-remote-logging-configured-udp5514.png)
 
-- `screenshots/milestone06-splunk-pfsense-events-visible.png`
+- `screenshots/step06-splunk-pfsense-events-visible.png`
 
-![Splunk search returning 901 pfSense syslog events](../screenshots/milestone06-splunk-pfsense-events-visible.png)
+![Splunk search returning 901 pfSense syslog events](../screenshots/step06-splunk-pfsense-events-visible.png)
 
-## Milestone 6 Windows Universal Forwarder
+## Step 6 Windows Universal Forwarder
 
 Status: Validated
 
@@ -73,7 +73,7 @@ Status: Validated
 
 `inputs.conf` (a Splunk forwarder configuration file that defines which logs to collect and send) manually created on `TEST-WIN10-LAN1` with Application, Security, and System event channels enabled. Splunk TCP `9997` receiving port enabled on `SIEM-SPLUNK01`.
 
-## Milestone 6 Windows Validation
+## Step 6 Windows Validation
 
 Validation search:
 
@@ -89,10 +89,10 @@ Validation result:
 
 Evidence:
 
-- `screenshots/milestone06-splunk-tcp9997-receiving-enabled.png`
+- `screenshots/step06-splunk-tcp9997-receiving-enabled.png`
 
-![Splunk TCP 9997 receiving port enabled](../screenshots/milestone06-splunk-tcp9997-receiving-enabled.png)
+![Splunk TCP 9997 receiving port enabled](../screenshots/step06-splunk-tcp9997-receiving-enabled.png)
 
-- `screenshots/milestone06-splunk-windows-events-visible.png`
+- `screenshots/step06-splunk-windows-events-visible.png`
 
-![Splunk search returning Windows Security events from TEST-WIN10-LAN1](../screenshots/milestone06-splunk-windows-events-visible.png)
+![Splunk search returning Windows Security events from TEST-WIN10-LAN1](../screenshots/step06-splunk-windows-events-visible.png)
